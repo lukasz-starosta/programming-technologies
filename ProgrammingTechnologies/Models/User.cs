@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProgrammingTechnologies.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -10,12 +11,26 @@ namespace ProgrammingTechnologies.Models
     class User : INotifyPropertyChanged
     {
         // Private fields holding values for public properties
+        private string _name;
         private string _lastName;
         private string _email;
-        private string _name;
+        private string _password;
+
+        // Constructor for use with object initializer
+        public User() { }
 
         // Public properties for safe exposition of data fields
         public Guid Id { get; } = Guid.NewGuid();
+
+        public string Password
+        {
+            get { return _password; }
+            set
+            {
+                _password = SecurePasswordHasher.Hash(value);
+                OnPropertyChanged("Password");
+            }
+        }
 
         public string Name
         {
@@ -45,6 +60,11 @@ namespace ProgrammingTechnologies.Models
                 _email = value;
                 OnPropertyChanged("Email");
             }
+        }
+
+        public bool isPasswordCorrect(string password)
+        {
+            return SecurePasswordHasher.Verify(password, _password);
         }
 
         #region INotifyPropertyChanged Implementation
