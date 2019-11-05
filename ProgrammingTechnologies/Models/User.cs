@@ -58,9 +58,9 @@ namespace ProgrammingTechnologies.Models
             }
         }
 
-        public bool isPasswordCorrect(string password)
+        public bool IsPasswordCorrect(string password)
         {
-            return SecurePasswordHasher.Verify(password, _password);
+            return SecurePasswordHasher.Verify(password, Password);
         }
 
         #region INotifyPropertyChanged Implementation
