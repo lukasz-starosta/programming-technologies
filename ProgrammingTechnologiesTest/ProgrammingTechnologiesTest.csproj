@@ -50,16 +50,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTest.cs" />
+    <Compile Include="Models\UserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Views\.keep" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProgrammingTechnologies\ProgrammingTechnologies.csproj">
       <Project>{d6d257f9-477b-4087-aa82-6c4ac276df39}</Project>
       <Name>ProgrammingTechnologies</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

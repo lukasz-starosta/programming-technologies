@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace ProgrammingTechnologies.Models
 {
-    class User : INotifyPropertyChanged
+    public class User : INotifyPropertyChanged
     {
         // Private fields holding values for public properties
         private string _name;
