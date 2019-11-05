@@ -4,19 +4,25 @@ using System.Windows.Input;
 
 namespace ProgrammingTechnologies.ViewModels
 {
-    class SessionViewModel
+    public class SessionViewModel
     {
         public User User { get; }
 
         public SessionViewModel()
         {
-            User = new User();
+            User = new User()
+            {
+                Email = string.Empty,
+                Name = string.Empty,
+                LastName = string.Empty
+            };
+
             RegisterUserCommand = new RelayCommand(
                 () =>
                 {
                     // Save user to database if applicable.
                     // Save user's id to retrieve logged in user form everywhere in application.
-                    System.Windows.Application.Current.Properties["CurrentUserId"] = User.Id;
+                    Data.CurrentUserId = User.Id;
                 },
                 () =>
                 {

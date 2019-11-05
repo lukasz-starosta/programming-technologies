@@ -6,15 +6,24 @@ namespace ProgrammingTechnologiesTest.Models
     [TestClass]
     public class UserTest
     {
-        [TestMethod]
-        public void TestObjectIniitalizer()
+        #region Helpers
+
+        private User CreateUser()
         {
-            User user = new User()
+            return new User()
             {
                 Email = "mosquito@komar.enterprise.com",
                 Name = "John",
                 LastName = "Doe"
             };
+        }
+
+        #endregion
+
+        [TestMethod]
+        public void TestObjectIniitalizer()
+        {
+            User user = CreateUser(); 
 
             Assert.AreEqual("mosquito@komar.enterprise.com", user.Email);
             Assert.AreEqual("John", user.Name);
@@ -38,12 +47,7 @@ namespace ProgrammingTechnologiesTest.Models
         [TestMethod]
         public void TestPasswordHashing()
         {
-            User user = new User()
-            {
-                Email = "mosquito@komar.enterprise.com",
-                Name = "John",
-                LastName = "Doe"
-            };
+            User user = CreateUser();
 
             user.Password = "password";
 
