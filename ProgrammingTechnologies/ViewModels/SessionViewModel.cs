@@ -22,7 +22,7 @@ namespace ProgrammingTechnologies.ViewModels
                 {
                     // Save user to database if applicable.
                     // Save user's id to retrieve logged in user form everywhere in application.
-                    Data.CurrentUserId = User.Id;
+                    //DatabaseService.CurrentUserId = User.Id;
                 },
                 () =>
                 {
