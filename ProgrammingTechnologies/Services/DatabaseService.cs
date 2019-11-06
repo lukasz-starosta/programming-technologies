@@ -5,10 +5,16 @@ using System.IO;
 
 namespace ProgrammingTechnologies.Services
 {
+    /// <summary>
+    /// Service thath allows to communicate with local database.
+    /// </summary>
     public class DatabaseService
     {
         private string _connectionString;
 
+        /// <summary>
+        /// Creates instance of DatabaseService establishing connection string relative to projects directory.
+        /// </summary>
         public DatabaseService()
         {
             string currentDirectory = Environment.CurrentDirectory;
@@ -17,6 +23,9 @@ namespace ProgrammingTechnologies.Services
             _connectionString = $"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={databaseDirectory};Integrated Security=True";
         }
 
+        /// <summary>
+        /// Executes passed query and returns DataTable object with the result.
+        /// </summary>
         public DataTable ExecuteQuery(string query)
         {
             DataTable result = new DataTable();
@@ -35,6 +44,9 @@ namespace ProgrammingTechnologies.Services
             return result;
         }
 
+        /// <summary>
+        /// Executes passed insert instruction.
+        /// </summary>
         public void ExecuteInsert(string instruction)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -52,6 +64,9 @@ namespace ProgrammingTechnologies.Services
             }
         }
 
+        /// <summary>
+        /// Executes passed delete instruction.
+        /// </summary>
         public void ExecuteDelete(string instruction)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -69,6 +84,9 @@ namespace ProgrammingTechnologies.Services
             }
         }
 
+        /// <summary>
+        /// Executes passed update instruction.
+        /// </summary>
         public void ExecuteUpdate(string instruction)
         {
             using (var connection = new SqlConnection(_connectionString))
