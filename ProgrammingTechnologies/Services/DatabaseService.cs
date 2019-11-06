@@ -45,61 +45,18 @@ namespace ProgrammingTechnologies.Services
         }
 
         /// <summary>
-        /// Executes passed insert instruction.
+        /// Executes passed insert, update, delete instructions.
         /// </summary>
-        public void ExecuteInsert(string instruction)
+        /// <param name="instruction"></param>
+        public void ExecuteInstruction(string instruction)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 using (var command = new SqlCommand(instruction, connection))
                 {
-                    using (var adapter = new SqlDataAdapter())
-                    {
-                        adapter.InsertCommand = command;
-                        connection.Open();
-                        adapter.InsertCommand.ExecuteNonQuery();
-                        connection.Close();
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Executes passed delete instruction.
-        /// </summary>
-        public void ExecuteDelete(string instruction)
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                using (var command = new SqlCommand(instruction, connection))
-                {
-                    using (var adapter = new SqlDataAdapter())
-                    {
-                        adapter.DeleteCommand = command;
-                        connection.Open();
-                        adapter.DeleteCommand.ExecuteNonQuery();
-                        connection.Close();
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Executes passed update instruction.
-        /// </summary>
-        public void ExecuteUpdate(string instruction)
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                using (var command = new SqlCommand(instruction, connection))
-                {
-                    using (var adapter = new SqlDataAdapter())
-                    {
-                        adapter.UpdateCommand = command;
-                        connection.Open();
-                        adapter.UpdateCommand.ExecuteNonQuery();
-                        connection.Close();
-                    }
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
                 }
             }
         }
