@@ -11,12 +11,21 @@ namespace ProgrammingTechnologies.Models
         private string _lastName;
         private string _email;
         private string _password;
+        private int _id;
 
         // Constructor for use with object initializer
         public User() { }
 
         // Public properties for safe exposition of data fields
-        public Guid Id { get; } = Guid.NewGuid();
+        public int Id
+        {
+            get { return _id;  }
+            set
+            {
+                _id = value;
+                OnPropertyChanged("Id");
+            }
+        }
 
         public string Password
         {
