@@ -1,24 +1,11 @@
-﻿using System.ComponentModel;
-
-namespace ProgrammingTechnologies.Models
+﻿namespace ProgrammingTechnologies.Models
 {
-    public class Game : INotifyPropertyChanged
+    public class Game : Model
     {
-        private int _id;
         private string _title;
         private string _description;
         private int _userId;
         private int _category;
-
-        public int Id
-        {
-            get { return _id;  }
-            set
-            {
-                _id = value;
-                OnPropertyChanged("Id");
-            }
-        }
 
         public string Title
         {
@@ -59,19 +46,5 @@ namespace ProgrammingTechnologies.Models
                 OnPropertyChanged("UserId");
             }
         }
-
-        #region INotifyPropertyChanged Implementation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Notifies about property change by raising PropertyChanged event.
-        /// </summary>
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
     }
 }
