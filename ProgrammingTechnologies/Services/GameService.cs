@@ -18,7 +18,7 @@ namespace ProgrammingTechnologies.Services
 
         public void CreateGame(Game game)
         {
-            string instruction = string.Format("insert into Users (title, description, category, user_id) values " + 
+            string instruction = string.Format("insert into Events (title, description, category, user_id) values " + 
                 "('{0}', '{1)', '{2}', {3}", game.Title, game.Description, game.Category, game.UserId );
             Console.WriteLine(instruction);
             database.ExecuteInstruction(instruction);
