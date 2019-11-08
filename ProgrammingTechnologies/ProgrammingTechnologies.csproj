@@ -76,6 +76,7 @@
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\Invitation.cs" />
     <Compile Include="Models\Model.cs" />
+    <Compile Include="Services\GameService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="ViewModels\SessionViewModel.cs" />
     <Page Include="MainWindow.xaml">

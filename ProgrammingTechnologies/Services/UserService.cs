@@ -27,7 +27,7 @@ namespace ProgrammingTechnologies.Services
             database.ExecuteInstruction(instruction);
         }
 
-        public User GetUser(string condition)
+        public User GetUserWhere(string condition)
         {
             string query = string.Format("select * from Users where {0}", condition);
             DataTable result = database.ExecuteQuery(query);
@@ -47,7 +47,7 @@ namespace ProgrammingTechnologies.Services
                 user.Name, user.LastName, user.Email, user.Password, user.Id));
         }
 
-        public void DeleteUser(string condition)
+        public void DeleteUserWhere(string condition)
         {
             database.ExecuteInstruction(string.Format("delete from Users where {0}", condition));
         }
@@ -77,7 +77,7 @@ namespace ProgrammingTechnologies.Services
             return users;
         }
 
-        public List<User> GetAllUsers(string condition)
+        public List<User> GetAllUsersWhere(string condition)
         {
             string query = string.Format("select * from Users where {0}", condition);
             DataTable result = database.ExecuteQuery(query);

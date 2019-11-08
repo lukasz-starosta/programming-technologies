@@ -25,7 +25,7 @@ namespace ProgrammingTechnologiesTest.Services
         public void TestReadUser()
         {
             UserService service = new UserService();
-            User user = service.GetUser("name = 'John'");
+            User user = service.GetUserWhere("name = 'John'");
             Assert.AreEqual("John", user.Name);
         }
 
@@ -33,10 +33,10 @@ namespace ProgrammingTechnologiesTest.Services
         public void TestUpdateUser()
         {
             UserService service = new UserService();
-            User user = service.GetUser("name = 'John'");
+            User user = service.GetUserWhere("name = 'John'");
             user.LastName = "Dobrik";
             service.UpdateUser(user);
-            User result = service.GetUser("name = 'John'");
+            User result = service.GetUserWhere("name = 'John'");
             Assert.AreEqual("Dobrik", result.LastName);
         }
 
@@ -44,7 +44,7 @@ namespace ProgrammingTechnologiesTest.Services
         public void TestDeleteUser()
         {
             UserService service = new UserService();
-            service.DeleteUser("last_name = 'Dobrik'");
+            service.DeleteUserWhere("last_name = 'Dobrik'");
         }
     }
 }
