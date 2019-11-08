@@ -19,7 +19,7 @@ namespace ProgrammingTechnologies.Services
         public void CreateEvent(Event _event)
         {
             string instruction = string.Format("insert into Events (title, description, date, user_id, game_id) values " +
-                "('{0}', '{1)', {2}, {3}, {4}", _event.Title, _event.Description, _event.Date, _event.UserId, _event.GameId);
+                "('{0}', '{1}', '{2}', {3}, {4})", _event.Title, _event.Description, _event.Date.ToString("yyyy-MM-dd HH:mm:ss.fff"), _event.UserId, _event.GameId);
             Console.WriteLine(instruction);
             database.ExecuteInstruction(instruction);
         }
@@ -41,11 +41,12 @@ namespace ProgrammingTechnologies.Services
 
         public void UpdateEvent(Event _event)
         {
-            database.ExecuteInstruction(string.Format("update Events set title = '{0}', description = '{1}', category = {2}, user_id = {3}, game_id = {4} where id = {5}",
-                _event.Title, _event.Description, _event.Date, _event.UserId, _event.GameId, _event.Id));
+            database.ExecuteInstruction(string.Format("update Events set " +
+                "title = '{0}', description = '{1}', date = '{2}', user_id = {3}, game_id = {4} where id = {5}",
+                _event.Title, _event.Description, _event.Date.ToString("yyyy-MM-dd HH:mm:ss.fff"), _event.UserId, _event.GameId, _event.Id));
         }
 
-        public void DeleteGameWhere(string condition)
+        public void DeleteEventWhere(string condition)
         {
             database.ExecuteInstruction(string.Format("delete from Events where {0}", condition));
         }
@@ -79,7 +80,7 @@ namespace ProgrammingTechnologies.Services
         public List<Event> GetAllEventsWhere(string condition)
         {
             string query = string.Format("select * from Events where {0}", condition);
-            DataTable result = database.ExecuteQuery(condition);
+            DataTable result = database.ExecuteQuery(query);
             List<Event> events = new List<Event>();
             foreach (DataRow row in result.Rows)
             {

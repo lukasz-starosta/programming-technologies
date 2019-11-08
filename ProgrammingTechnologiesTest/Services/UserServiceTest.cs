@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ProgrammingTechnologies.Models;
 using ProgrammingTechnologies.Services;
+using System;
+using System.Collections.Generic;
 
 namespace ProgrammingTechnologiesTest.Services
 {
@@ -38,6 +40,28 @@ namespace ProgrammingTechnologiesTest.Services
             service.UpdateUser(user);
             User result = service.GetUserWhere("name = 'John'");
             Assert.AreEqual("Dobrik", result.LastName);
+        }
+
+        [TestMethod]
+        public void TestGetAllUsers()
+        {
+            UserService service = new UserService();
+            List<User> users = service.GetAllUsers();
+            foreach (User user in users)
+            {
+                Assert.IsTrue(user.Id != 0);
+            }
+        }
+
+        [TestMethod]
+        public void TestGetAllUsersWhere()
+        {
+            UserService service = new UserService();
+            List<User> users = service.GetAllUsersWhere("last_name = 'Dobrik'");
+            foreach (User user in users)
+            {
+                Assert.AreEqual("Dobrik", user.LastName);
+            }
         }
 
         [TestMethod]

@@ -18,8 +18,8 @@ namespace ProgrammingTechnologies.Services
 
         public void CreateGame(Game game)
         {
-            string instruction = string.Format("insert into Events (title, description, category, user_id) values " + 
-                "('{0}', '{1)', '{2}', {3}", game.Title, game.Description, game.Category, game.UserId );
+            string instruction = string.Format("insert into Games (title, description, category, user_id) values " + 
+                "('{0}', '{1}', {2}, {3})", game.Title, game.Description, game.Category, game.UserId );
             Console.WriteLine(instruction);
             database.ExecuteInstruction(instruction);
         }
@@ -40,7 +40,7 @@ namespace ProgrammingTechnologies.Services
 
         public void UpdateGame(Game game)
         {
-            database.ExecuteInstruction(string.Format("update Users set title = '{0}', description = '{1}', category = {2}, user_id = {3} where id = {4}",
+            database.ExecuteInstruction(string.Format("update Games set title = '{0}', description = '{1}', category = {2}, user_id = {3} where id = {4}",
                 game.Title, game.Description, game.Category, game.UserId, game.Id));
         }
 

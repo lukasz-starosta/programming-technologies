@@ -61,7 +61,7 @@ namespace ProgrammingTechnologies.Services
 
         public List<User> GetAllUsers()
         {
-            DataTable result = database.ExecuteQuery("select * from Users where {0}");
+            DataTable result = database.ExecuteQuery("select * from Users");
             List<User> users = new List<User>();
             foreach (DataRow row in result.Rows)
             {
