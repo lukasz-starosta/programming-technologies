@@ -79,6 +79,7 @@
     <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\GameService.cs" />
     <Compile Include="Services\InvitationService.cs" />
+    <Compile Include="Services\IService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="ViewModels\SessionViewModel.cs" />
     <Page Include="MainWindow.xaml">

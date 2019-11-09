@@ -5,7 +5,7 @@ using System.Data;
 
 namespace ProgrammingTechnologies.Services
 {
-    public class GameService
+    public class GameService : IService<Game>
     {
         private DatabaseService database;
 
@@ -16,16 +16,16 @@ namespace ProgrammingTechnologies.Services
 
         #region CRUD
 
-        public void CreateGame(ref Game game)
+        public void CreateServicedObject(ref Game game)
         {
             string instruction = string.Format("insert into Games (title, description, category, user_id) values " + 
                 "('{0}', '{1}', {2}, {3})", game.Title, game.Description, game.Category, game.UserId );
             Console.WriteLine(instruction);
             database.ExecuteInstruction(instruction);
-            game = GetGameWhere($"title = '{game.Title}' and description = '{game.Description}'");
+            game = GetServicedObjectWhere($"title = '{game.Title}' and description = '{game.Description}'");
         }
 
-        public Game GetGameWhere(string condition)
+        public Game GetServicedObjectWhere(string condition)
         {
             string query = string.Format("select * from Games where {0}", condition);
             DataTable result = database.ExecuteQuery(query);
@@ -39,26 +39,26 @@ namespace ProgrammingTechnologies.Services
             };
         }
 
-        public void UpdateGame(ref Game game)
+        public void UpdateServicedObject(ref Game game)
         {
             database.ExecuteInstruction(string.Format("update Games set title = '{0}', description = '{1}', category = {2}, user_id = {3} where id = {4}",
                 game.Title, game.Description, game.Category, game.UserId, game.Id));
-            game = GetGameWhere($"id = {game.Id}");
+            game = GetServicedObjectWhere($"id = {game.Id}");
         }
 
-        public void DeleteGameWhere(string condition)
+        public void DeleteServicedObjectWhere(string condition)
         {
             database.ExecuteInstruction(string.Format("delete from Games where {0}", condition));
         }
 
-        public void DeleteGame(Game game)
+        public void DeleteServicedObject(Game game)
         {
             database.ExecuteInstruction(string.Format("delete from Games where id = {0}", game.Id));
         }
 
         #endregion
 
-        public List<Game> GetAllGames()
+        public List<Game> GetAllServicedObjects()
         {
             DataTable result = database.ExecuteQuery("select * from Games");
             List<Game> games = new List<Game>();
@@ -76,7 +76,7 @@ namespace ProgrammingTechnologies.Services
             return games;
         }
 
-        public List<Game> GetAllGamesWhere(string condition)
+        public List<Game> GetAllServicedObjectsWhere(string condition)
         {
             string query = string.Format("select * from Games where {0}", condition);
             DataTable result = database.ExecuteQuery(condition);

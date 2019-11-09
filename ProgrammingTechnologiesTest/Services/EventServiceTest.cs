@@ -37,7 +37,7 @@ namespace ProgrammingTechnologiesTest.Services
                 Email = "test@tes.com",
                 Password = "password",
             };
-            userService.CreateUser(ref user);
+            userService.CreateServicedObject(ref user);
 
             game = new Game()
             {
@@ -46,7 +46,7 @@ namespace ProgrammingTechnologiesTest.Services
                 Category = 1,
                 UserId = user.Id
             };
-            gameService.CreateGame(ref game);
+            gameService.CreateServicedObject(ref game);
         }
 
         [TestCleanup]
@@ -57,8 +57,8 @@ namespace ProgrammingTechnologiesTest.Services
             GameService gameService = new GameService(databaseService);
 
             databaseService.ExecuteInstruction("delete from Events");
-            gameService.DeleteGame(game);
-            userService.DeleteUser(user);
+            gameService.DeleteServicedObject(game);
+            userService.DeleteServicedObject(user);
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace ProgrammingTechnologiesTest.Services
 
             EventService eventService = new EventService(new DatabaseService());
 
-            eventService.CreateEvent(ref _event);
+            eventService.CreateServicedObject(ref _event);
             Assert.IsNotNull(_event.Id);
         }
 
@@ -79,11 +79,11 @@ namespace ProgrammingTechnologiesTest.Services
 
             EventService eventService = new EventService(new DatabaseService());
 
-            eventService.CreateEvent(ref _event);
+            eventService.CreateServicedObject(ref _event);
 
             _event.Description = "Changed description.";
 
-            eventService.UpdateEvent(ref _event);
+            eventService.UpdateServicedObject(ref _event);
 
             Assert.AreEqual("Changed description.", _event.Description);
         }
@@ -95,8 +95,8 @@ namespace ProgrammingTechnologiesTest.Services
 
             EventService eventService = new EventService(new DatabaseService());
 
-            eventService.CreateEvent(ref _event);
-            Event result = eventService.GetEventWhere("title = 'EventForEventService'");
+            eventService.CreateServicedObject(ref _event);
+            Event result = eventService.GetServicedObjectWhere("title = 'EventForEventService'");
 
             Assert.AreEqual(_event.Title, result.Title);
         }
@@ -109,10 +109,10 @@ namespace ProgrammingTechnologiesTest.Services
             for (int i = 0; i < 10; i++)
             {
                 Event _event = getNewEvent();
-                eventService.CreateEvent(ref _event);
+                eventService.CreateServicedObject(ref _event);
             }
 
-            List<Event> events = eventService.GetAllEventsWhere("title = 'EventForEventService'");
+            List<Event> events = eventService.GetAllServicedObjectsWhere("title = 'EventForEventService'");
 
             Assert.AreEqual(10, events.Count);
 
@@ -127,15 +127,15 @@ namespace ProgrammingTechnologiesTest.Services
         {
             EventService eventService = new EventService(new DatabaseService());
 
-            int eventsBefore = eventService.GetAllEvents().Count;
+            int eventsBefore = eventService.GetAllServicedObjects().Count;
 
             for (int i = 0; i < 10; i++)
             {
                 Event _event = getNewEvent();
-                eventService.CreateEvent(ref _event);
+                eventService.CreateServicedObject(ref _event);
             }
 
-            int eventsAfter = eventService.GetAllEvents().Count;
+            int eventsAfter = eventService.GetAllServicedObjects().Count;
 
             Assert.AreEqual(10, eventsAfter - eventsBefore);
         }
@@ -147,13 +147,13 @@ namespace ProgrammingTechnologiesTest.Services
 
             EventService eventService = new EventService(new DatabaseService());
 
-            eventService.CreateEvent(ref _event);
+            eventService.CreateServicedObject(ref _event);
 
-            int eventsBefore = eventService.GetAllEvents().Count;
+            int eventsBefore = eventService.GetAllServicedObjects().Count;
 
-            eventService.DeleteEvent(_event);
+            eventService.DeleteServicedObject(_event);
 
-            int eventsAfter = eventService.GetAllEvents().Count;
+            int eventsAfter = eventService.GetAllServicedObjects().Count;
 
             Assert.AreEqual(1, eventsBefore - eventsAfter);
         }

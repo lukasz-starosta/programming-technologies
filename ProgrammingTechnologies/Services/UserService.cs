@@ -8,7 +8,7 @@ namespace ProgrammingTechnologies.Services
     /// <summary>
     /// Service responsible for operations performed on User model.
     /// </summary>
-    public class UserService
+    public class UserService : IService<User>
     {
         DatabaseService database;
 
@@ -19,15 +19,15 @@ namespace ProgrammingTechnologies.Services
 
         #region CRUD
 
-        public void CreateUser(ref User user)
+        public void CreateServicedObject(ref User user)
         {
             string instruction = string.Format("insert into Users (name, last_name, email, password) values" +
                                                "('{0}', '{1}', '{2}', '{3}')", user.Name, user.LastName, user.Email, user.Password);
             database.ExecuteInstruction(instruction);
-            user = GetUserWhere($"email = '{user.Email}'");
+            user = GetServicedObjectWhere($"email = '{user.Email}'");
         }
 
-        public User GetUserWhere(string condition)
+        public User GetServicedObjectWhere(string condition)
         {
             string query = string.Format("select * from Users where {0}", condition);
             DataTable result = database.ExecuteQuery(query);
@@ -41,26 +41,26 @@ namespace ProgrammingTechnologies.Services
             };
         }
 
-        public void UpdateUser(ref User user)
+        public void UpdateServicedObject(ref User user)
         {
             database.ExecuteInstruction(string.Format("update Users set name = '{0}', last_name = '{1}', email = '{2}', password = '{3}' where id = {4}",
                 user.Name, user.LastName, user.Email, user.Password, user.Id));
-            user = GetUserWhere($"id = {user.Id}");
+            user = GetServicedObjectWhere($"id = {user.Id}");
         }
 
-        public void DeleteUserWhere(string condition)
+        public void DeleteServicedObjectWhere(string condition)
         {
             database.ExecuteInstruction(string.Format("delete from Users where {0}", condition));
         }
 
-        public void DeleteUser(User user)
+        public void DeleteServicedObject(User user)
         {
             database.ExecuteInstruction(string.Format("delete from Users where id = {0}", user.Id));
         }
 
         #endregion
 
-        public List<User> GetAllUsers()
+        public List<User> GetAllServicedObjects()
         {
             DataTable result = database.ExecuteQuery("select * from Users");
             List<User> users = new List<User>();
@@ -78,7 +78,7 @@ namespace ProgrammingTechnologies.Services
             return users;
         }
 
-        public List<User> GetAllUsersWhere(string condition)
+        public List<User> GetAllServicedObjectsWhere(string condition)
         {
             string query = string.Format("select * from Users where {0}", condition);
             DataTable result = database.ExecuteQuery(query);

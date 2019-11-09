@@ -33,7 +33,7 @@ namespace ProgrammingTechnologiesTest.Services
                 Password = "password"
             };
 
-            userService.CreateUser(ref user);
+            userService.CreateServicedObject(ref user);
         }
 
         [TestCleanup]
@@ -50,7 +50,7 @@ namespace ProgrammingTechnologiesTest.Services
         {
             Game game = GetNewGame();
             GameService gameService = new GameService(new DatabaseService());
-            gameService.CreateGame(ref game);
+            gameService.CreateServicedObject(ref game);
             Assert.IsNotNull(game.Id);
         }
 
@@ -59,8 +59,8 @@ namespace ProgrammingTechnologiesTest.Services
         {
             Game game = GetNewGame();
             GameService gameService = new GameService(new DatabaseService());
-            gameService.CreateGame(ref game);
-            Game result = gameService.GetGameWhere($"id = {game.Id}");
+            gameService.CreateServicedObject(ref game);
+            Game result = gameService.GetServicedObjectWhere($"id = {game.Id}");
             Assert.AreEqual(game.Title, result.Title);
         }
 
@@ -69,10 +69,10 @@ namespace ProgrammingTechnologiesTest.Services
         {
             Game game = GetNewGame();
             GameService gameService = new GameService(new DatabaseService());
-            gameService.CreateGame(ref game);
+            gameService.CreateServicedObject(ref game);
             game.Title = "wujaa";
-            gameService.UpdateGame(ref game);
-            Game result = gameService.GetGameWhere($"id = {game.Id}");
+            gameService.UpdateServicedObject(ref game);
+            Game result = gameService.GetServicedObjectWhere($"id = {game.Id}");
             Assert.AreEqual("wujaa", result.Title);
         }
 
@@ -81,10 +81,10 @@ namespace ProgrammingTechnologiesTest.Services
         {
             Game game = GetNewGame();
             GameService gameService = new GameService(new DatabaseService());
-            gameService.CreateGame(ref game);
-            int gamesBefore = gameService.GetAllGames().Count;
-            gameService.DeleteGameWhere($"id = {game.Id}");
-            int gamesAfter = gameService.GetAllGames().Count;
+            gameService.CreateServicedObject(ref game);
+            int gamesBefore = gameService.GetAllServicedObjects().Count;
+            gameService.DeleteServicedObjectWhere($"id = {game.Id}");
+            int gamesAfter = gameService.GetAllServicedObjects().Count;
             Assert.AreEqual(1, gamesBefore - gamesAfter);
         }
     }

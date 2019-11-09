@@ -32,7 +32,7 @@ namespace ProgrammingTechnologiesTest.Services
         {
             User user = GetNewUser();
             UserService userService = new UserService(new DatabaseService());
-            userService.CreateUser(ref user);
+            userService.CreateServicedObject(ref user);
             Assert.IsNotNull(user.Id);
         }
 
@@ -41,8 +41,8 @@ namespace ProgrammingTechnologiesTest.Services
         {
             User user = GetNewUser();
             UserService userService = new UserService(new DatabaseService());
-            userService.CreateUser(ref user);
-            user = userService.GetUserWhere("name = 'John'");
+            userService.CreateServicedObject(ref user);
+            user = userService.GetServicedObjectWhere("name = 'John'");
             Assert.AreEqual("John", user.Name);
         }
 
@@ -51,10 +51,10 @@ namespace ProgrammingTechnologiesTest.Services
         {
             UserService userService= new UserService(new DatabaseService());
             User user = GetNewUser();
-            userService.CreateUser(ref user);
+            userService.CreateServicedObject(ref user);
             user.LastName = "Dobrik";
-            userService.UpdateUser(ref user);
-            User result = userService.GetUserWhere("name = 'John'");
+            userService.UpdateServicedObject(ref user);
+            User result = userService.GetServicedObjectWhere("name = 'John'");
             Assert.AreEqual("Dobrik", result.LastName);
         }
 
@@ -62,7 +62,7 @@ namespace ProgrammingTechnologiesTest.Services
         public void TestGetAllUsers()
         {
             UserService service = new UserService(new DatabaseService());
-            List<User> users = service.GetAllUsers();
+            List<User> users = service.GetAllServicedObjects();
             foreach (User user in users)
             {
                 Assert.IsTrue(user.Id != 0);
@@ -73,7 +73,7 @@ namespace ProgrammingTechnologiesTest.Services
         public void TestGetAllUsersWhere()
         {
             UserService service = new UserService(new DatabaseService());
-            List<User> users = service.GetAllUsersWhere("last_name = 'Dobrik'");
+            List<User> users = service.GetAllServicedObjectsWhere("last_name = 'Dobrik'");
             foreach (User user in users)
             {
                 Assert.AreEqual("Dobrik", user.LastName);
@@ -84,7 +84,7 @@ namespace ProgrammingTechnologiesTest.Services
         public void TestDeleteUser()
         {
             UserService service = new UserService(new DatabaseService());
-            service.DeleteUserWhere("last_name = 'Dobrik'");
+            service.DeleteServicedObjectWhere("last_name = 'Dobrik'");
         }
     }
 }

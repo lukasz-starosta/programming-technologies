@@ -5,7 +5,7 @@ using System.Data;
 
 namespace ProgrammingTechnologies.Services
 {
-    public class InvitationService
+    public class InvitationService : IService<Invitation>
     {
         private DatabaseService database;
 
@@ -16,16 +16,16 @@ namespace ProgrammingTechnologies.Services
 
         #region CRUD
 
-        public void CreateInvitation(ref Invitation invitation)
+        public void CreateServicedObject(ref Invitation invitation)
         {
             string instruction = string.Format("insert into Invitations (user_id, event_id) values " +
                 "({0}, {1})", invitation.UserId, invitation.EventId);
             Console.WriteLine(instruction);
             database.ExecuteInstruction(instruction);
-            invitation = GetInvitationWhere($"user_id = {invitation.UserId} and event_id = {invitation.EventId}");
+            invitation = GetServicedObjectWhere($"user_id = {invitation.UserId} and event_id = {invitation.EventId}");
         }
 
-        public Invitation GetInvitationWhere(string condition)
+        public Invitation GetServicedObjectWhere(string condition)
         {
             string query = string.Format("select * from Invitations where {0}", condition);
             DataTable result = database.ExecuteQuery(query);
@@ -37,27 +37,27 @@ namespace ProgrammingTechnologies.Services
             };
         }
 
-        public void UpdateInvitation(ref Invitation invitation)
+        public void UpdateServicedObject(ref Invitation invitation)
         {
             Console.WriteLine(invitation.UserId);
             database.ExecuteInstruction(string.Format("update Invitations set user_id = {0}, event_id = {1} where id = {2}",
                 invitation.UserId, invitation.EventId, invitation.Id));
-            invitation = GetInvitationWhere($"id = {invitation.Id}");
+            invitation = GetServicedObjectWhere($"id = {invitation.Id}");
         }
 
-        public void DeleteInvitationWhere(string condition)
+        public void DeleteServicedObjectWhere(string condition)
         {
             database.ExecuteInstruction(string.Format("delete from Invitations where {0}", condition));
         }
 
-        public void DeleteInvitation(Invitation invitation)
+        public void DeleteServicedObject(Invitation invitation)
         {
             database.ExecuteInstruction(string.Format("delete from Invitations where id = {0}", invitation.Id));
         }
 
         #endregion
 
-        public List<Invitation> GetAllInvitations()
+        public List<Invitation> GetAllServicedObjects()
         {
             DataTable result = database.ExecuteQuery("select * from Invitations");
             List<Invitation> invitations = new List<Invitation>();
@@ -73,7 +73,7 @@ namespace ProgrammingTechnologies.Services
             return invitations;
         }
 
-        public List<Invitation> GetAllInvitationsWhere(string condition)
+        public List<Invitation> GetAllServicedObjectsWhere(string condition)
         {
             string query = string.Format("select * from Invitations where {0}", condition);
             DataTable result = database.ExecuteQuery(query);

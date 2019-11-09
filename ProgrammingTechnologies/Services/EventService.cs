@@ -5,7 +5,7 @@ using System.Data;
 
 namespace ProgrammingTechnologies.Services
 {
-    public class EventService
+    public class EventService : IService<Event>
     {
         private DatabaseService database;
 
@@ -16,16 +16,16 @@ namespace ProgrammingTechnologies.Services
 
         #region CRUD
 
-        public void CreateEvent(ref Event _event)
+        public void CreateServicedObject(ref Event _event)
         {
             string instruction = string.Format("insert into Events (title, description, date, user_id, game_id) values " +
                 "('{0}', '{1}', '{2}', {3}, {4})", _event.Title, _event.Description, _event.Date.ToString("yyyy-MM-dd HH:mm:ss.fff"), _event.UserId, _event.GameId);
             Console.WriteLine(instruction);
             database.ExecuteInstruction(instruction);
-            _event = GetEventWhere($"title = '{_event.Title}' and date = '{_event.Date.ToString("yyyy - MM - dd HH: mm:ss.fff")}'");
+            _event = GetServicedObjectWhere($"title = '{_event.Title}' and date = '{_event.Date.ToString("yyyy - MM - dd HH: mm:ss.fff")}'");
         }
 
-        public Event GetEventWhere(string condition)
+        public Event GetServicedObjectWhere(string condition)
         {
             string query = string.Format("select * from Events where {0}", condition);
             DataTable result = database.ExecuteQuery(query);
@@ -40,27 +40,27 @@ namespace ProgrammingTechnologies.Services
             };
         }
 
-        public void UpdateEvent(ref Event _event)
+        public void UpdateServicedObject(ref Event _event)
         {
             database.ExecuteInstruction(string.Format("update Events set " +
                 "title = '{0}', description = '{1}', date = '{2}', user_id = {3}, game_id = {4} where id = {5}",
                 _event.Title, _event.Description, _event.Date.ToString("yyyy-MM-dd HH:mm:ss.fff"), _event.UserId, _event.GameId, _event.Id));
-            _event = GetEventWhere($"id = {_event.Id}");
+            _event = GetServicedObjectWhere($"id = {_event.Id}");
         }
 
-        public void DeleteEventWhere(string condition)
+        public void DeleteServicedObjectWhere(string condition)
         {
             database.ExecuteInstruction(string.Format("delete from Events where {0}", condition));
         }
 
-        public void DeleteEvent(Event _event)
+        public void DeleteServicedObject(Event _event)
         {
             database.ExecuteInstruction(string.Format("delete from Events where id = {0}", _event.Id));
         }
 
         #endregion
 
-        public List<Event> GetAllEvents()
+        public List<Event> GetAllServicedObjects()
         {
             DataTable result = database.ExecuteQuery("select * from Events");
             List<Event> events = new List<Event>();
@@ -79,7 +79,7 @@ namespace ProgrammingTechnologies.Services
             return events;
         }
 
-        public List<Event> GetAllEventsWhere(string condition)
+        public List<Event> GetAllServicedObjectsWhere(string condition)
         {
             string query = string.Format("select * from Events where {0}", condition);
             DataTable result = database.ExecuteQuery(query);
