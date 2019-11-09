@@ -9,36 +9,52 @@ namespace ProgrammingTechnologiesTest.Services
     [TestClass]
     public class UserServiceTest
     {
-        [TestMethod]
-        public void TestCreateUser()
+        private User GetNewUser()
         {
-            User user = new User()
+            return new User()
             {
                 Email = "mosquito",
                 Name = "John",
                 LastName = "Doe",
                 Password = "password"
             };
-            UserService service = new UserService(new DatabaseService());
-            service.CreateUser(user);
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            DatabaseService databaseService = new DatabaseService();
+            databaseService.ExecuteInstruction("delete from Users");
         }
 
         [TestMethod]
-        public void TestReadUser()
+        public void TestCreateUser()
         {
-            UserService service = new UserService(new DatabaseService());
-            User user = service.GetUserWhere("name = 'John'");
+            User user = GetNewUser();
+            UserService userService = new UserService(new DatabaseService());
+            userService.CreateUser(ref user);
+            Assert.IsNotNull(user.Id);
+        }
+
+        [TestMethod]
+        public void TestGetUser()
+        {
+            User user = GetNewUser();
+            UserService userService = new UserService(new DatabaseService());
+            userService.CreateUser(ref user);
+            user = userService.GetUserWhere("name = 'John'");
             Assert.AreEqual("John", user.Name);
         }
 
         [TestMethod]
         public void TestUpdateUser()
         {
-            UserService service = new UserService(new DatabaseService());
-            User user = service.GetUserWhere("name = 'John'");
+            UserService userService= new UserService(new DatabaseService());
+            User user = GetNewUser();
+            userService.CreateUser(ref user);
             user.LastName = "Dobrik";
-            service.UpdateUser(user);
-            User result = service.GetUserWhere("name = 'John'");
+            userService.UpdateUser(ref user);
+            User result = userService.GetUserWhere("name = 'John'");
             Assert.AreEqual("Dobrik", result.LastName);
         }
 

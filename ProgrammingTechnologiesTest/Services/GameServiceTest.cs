@@ -7,116 +7,85 @@ namespace ProgrammingTechnologiesTest.Services
     [TestClass]
     public class GameServiceTest
     {
-        [TestMethod]
-        public void TestCreateGame()
+        private User user;
+
+        private Game GetNewGame()
         {
-            User user = new User()
-            {
-                Email = "test@test.com",
-                Name = "Tester",
-                LastName = "Testing",
-                Password = "password"
-            };
-            UserService userService = new UserService(new DatabaseService());
-            userService.CreateUser(user);
-            user = userService.GetUserWhere("email = 'test@test.com'");
-            Game game = new Game()
+            return new Game()
             {
                 Title = "Test Title",
                 Description = "Test Description",
                 Category = 1,
                 UserId = user.Id
             };
-            GameService service = new GameService(new DatabaseService());
-            service.CreateGame(game);
-            service.DeleteGameWhere($"user_id = {user.Id}");
-            userService.DeleteUser(user);
+        }
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            UserService userService = new UserService(new DatabaseService());
+
+            user = new User()
+            {
+                Email = "test@test.com",
+                Name = "Tester",
+                LastName = "Testing",
+                Password = "password"
+            };
+
+            userService.CreateUser(ref user);
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            DatabaseService databaseService = new DatabaseService();
+
+            databaseService.ExecuteInstruction("delete from Games");
+            databaseService.ExecuteInstruction("delete from Users");
+        }
+
+        [TestMethod]
+        public void TestCreateGame()
+        {
+            Game game = GetNewGame();
+            GameService gameService = new GameService(new DatabaseService());
+            gameService.CreateGame(ref game);
+            Assert.IsNotNull(game.Id);
         }
 
         [TestMethod]
         public void TestGetGame()
         {
-            User user = new User()
-            {
-                Email = "test@test.com",
-                Name = "Tester",
-                LastName = "Testing",
-                Password = "password"
-            };
-            UserService userService = new UserService(new DatabaseService());
-            userService.CreateUser(user);
-            user = userService.GetUserWhere("email = 'test@test.com'");
-            Game game = new Game()
-            {
-                Title = "Test Title",
-                Description = "Test Description",
-                Category = 1,
-                UserId = user.Id
-            };
-            GameService service = new GameService(new DatabaseService());
-            service.CreateGame(game);
-            Game result = service.GetGameWhere($"title = '{game.Title}'");
+            Game game = GetNewGame();
+            GameService gameService = new GameService(new DatabaseService());
+            gameService.CreateGame(ref game);
+            Game result = gameService.GetGameWhere($"id = {game.Id}");
             Assert.AreEqual(game.Title, result.Title);
-            service.DeleteGameWhere($"user_id = {user.Id}");
-            userService.DeleteUser(user);
         }
 
         [TestMethod]
         public void TestUpdateGame()
         {
-            User user = new User()
-            {
-                Email = "test@test.com",
-                Name = "Tester",
-                LastName = "Testing",
-                Password = "password"
-            };
-            UserService userService = new UserService(new DatabaseService());
-            userService.CreateUser(user);
-            user = userService.GetUserWhere("email = 'test@test.com'");
-            Game game = new Game()
-            {
-                Title = "Test Title",
-                Description = "Test Description",
-                Category = 1,
-                UserId = user.Id
-            };
-            GameService service = new GameService(new DatabaseService());
-            service.CreateGame(game);
-            game = service.GetGameWhere($"title = '{game.Title}'");
+            Game game = GetNewGame();
+            GameService gameService = new GameService(new DatabaseService());
+            gameService.CreateGame(ref game);
             game.Title = "wujaa";
-            service.UpdateGame(game);
-            Game result = service.GetGameWhere($"id = {game.Id}");
+            gameService.UpdateGame(ref game);
+            Game result = gameService.GetGameWhere($"id = {game.Id}");
             Assert.AreEqual("wujaa", result.Title);
-            service.DeleteGameWhere($"user_id = {user.Id}");
-            userService.DeleteUser(user);
         }
 
         [TestMethod]
         public void TestDeleteGame()
         {
-
-            User user = new User()
-            {
-                Email = "test@test.com",
-                Name = "Tester",
-                LastName = "Testing",
-                Password = "password"
-            };
-            UserService userService = new UserService(new DatabaseService());
-            userService.CreateUser(user);
-            user = userService.GetUserWhere("email = 'test@test.com'");
-            Game game = new Game()
-            {
-                Title = "Test Title",
-                Description = "Test Description",
-                Category = 1,
-                UserId = user.Id
-            };
-            GameService service = new GameService(new DatabaseService());
-            service.CreateGame(game);
-            service.DeleteGameWhere($"user_id = {user.Id}");
-            userService.DeleteUser(user);
+            Game game = GetNewGame();
+            GameService gameService = new GameService(new DatabaseService());
+            gameService.CreateGame(ref game);
+            int gamesBefore = gameService.GetAllGames().Count;
+            gameService.DeleteGameWhere($"id = {game.Id}");
+            int gamesAfter = gameService.GetAllGames().Count;
+            Assert.AreEqual(1, gamesBefore - gamesAfter);
         }
     }
 }

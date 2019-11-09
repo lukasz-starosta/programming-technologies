@@ -30,25 +30,23 @@ namespace ProgrammingTechnologiesTest.Services
             UserService userService = new UserService(databaseService);
             GameService gameService = new GameService(databaseService);
 
-            userService.CreateUser(new User()
+            user = new User()
             {
                 Name = "EventServiceTest",
                 LastName = "Test",
                 Email = "test@tes.com",
                 Password = "password",
-            });
+            };
+            userService.CreateUser(ref user);
 
-            user = userService.GetUserWhere("name = 'EventServiceTest'");
-
-            gameService.CreateGame(new Game()
+            game = new Game()
             {
                 Title = "EventServiceTestGame",
                 Description = "Test",
                 Category = 1,
                 UserId = user.Id
-            });
-
-            game = gameService.GetGameWhere("title = 'EventServiceTestGame'");
+            };
+            gameService.CreateGame(ref game);
         }
 
         [TestCleanup]
@@ -58,6 +56,7 @@ namespace ProgrammingTechnologiesTest.Services
             UserService userService = new UserService(databaseService);
             GameService gameService = new GameService(databaseService);
 
+            databaseService.ExecuteInstruction("delete from Events");
             gameService.DeleteGame(game);
             userService.DeleteUser(user);
         }
@@ -69,8 +68,8 @@ namespace ProgrammingTechnologiesTest.Services
 
             EventService eventService = new EventService(new DatabaseService());
 
-            eventService.CreateEvent(_event);
-            eventService.DeleteEventWhere("title = 'EventForEventService'");
+            eventService.CreateEvent(ref _event);
+            Assert.IsNotNull(_event.Id);
         }
 
         [TestMethod]
@@ -80,17 +79,13 @@ namespace ProgrammingTechnologiesTest.Services
 
             EventService eventService = new EventService(new DatabaseService());
 
-            eventService.CreateEvent(_event);
-            _event = eventService.GetEventWhere("title = 'EventForEventService'");
+            eventService.CreateEvent(ref _event);
 
             _event.Description = "Changed description.";
 
-            eventService.UpdateEvent(_event);
-            _event = eventService.GetEventWhere($"id = {_event.Id}");
+            eventService.UpdateEvent(ref _event);
 
             Assert.AreEqual("Changed description.", _event.Description);
-
-            eventService.DeleteEventWhere("title = 'EventForEventService'");
         }
 
         [TestMethod]
@@ -100,12 +95,10 @@ namespace ProgrammingTechnologiesTest.Services
 
             EventService eventService = new EventService(new DatabaseService());
 
-            eventService.CreateEvent(_event);
+            eventService.CreateEvent(ref _event);
             Event result = eventService.GetEventWhere("title = 'EventForEventService'");
 
             Assert.AreEqual(_event.Title, result.Title);
-
-            eventService.DeleteEventWhere("title = 'EventForEventService'");
         }
 
         [TestMethod]
@@ -116,7 +109,7 @@ namespace ProgrammingTechnologiesTest.Services
             for (int i = 0; i < 10; i++)
             {
                 Event _event = getNewEvent();
-                eventService.CreateEvent(_event);
+                eventService.CreateEvent(ref _event);
             }
 
             List<Event> events = eventService.GetAllEventsWhere("title = 'EventForEventService'");
@@ -127,8 +120,6 @@ namespace ProgrammingTechnologiesTest.Services
             {
                 Assert.AreEqual("EventForEventService", e.Title);
             }
-
-            eventService.DeleteEventWhere("title = 'EventForEventService'");
         }
 
         [TestMethod]
@@ -141,14 +132,12 @@ namespace ProgrammingTechnologiesTest.Services
             for (int i = 0; i < 10; i++)
             {
                 Event _event = getNewEvent();
-                eventService.CreateEvent(_event);
+                eventService.CreateEvent(ref _event);
             }
 
             int eventsAfter = eventService.GetAllEvents().Count;
 
             Assert.AreEqual(10, eventsAfter - eventsBefore);
-
-            eventService.DeleteEventWhere("title = 'EventForEventService'");
         }
 
         [TestMethod]
@@ -158,8 +147,7 @@ namespace ProgrammingTechnologiesTest.Services
 
             EventService eventService = new EventService(new DatabaseService());
 
-            eventService.CreateEvent(_event);
-            _event = eventService.GetEventWhere("title = 'EventForEventService'");
+            eventService.CreateEvent(ref _event);
 
             int eventsBefore = eventService.GetAllEvents().Count;
 

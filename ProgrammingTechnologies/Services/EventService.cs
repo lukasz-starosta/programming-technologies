@@ -16,12 +16,13 @@ namespace ProgrammingTechnologies.Services
 
         #region CRUD
 
-        public void CreateEvent(Event _event)
+        public void CreateEvent(ref Event _event)
         {
             string instruction = string.Format("insert into Events (title, description, date, user_id, game_id) values " +
                 "('{0}', '{1}', '{2}', {3}, {4})", _event.Title, _event.Description, _event.Date.ToString("yyyy-MM-dd HH:mm:ss.fff"), _event.UserId, _event.GameId);
             Console.WriteLine(instruction);
             database.ExecuteInstruction(instruction);
+            _event = GetEventWhere($"title = '{_event.Title}' and date = '{_event.Date.ToString("yyyy - MM - dd HH: mm:ss.fff")}'");
         }
 
         public Event GetEventWhere(string condition)
@@ -39,11 +40,12 @@ namespace ProgrammingTechnologies.Services
             };
         }
 
-        public void UpdateEvent(Event _event)
+        public void UpdateEvent(ref Event _event)
         {
             database.ExecuteInstruction(string.Format("update Events set " +
                 "title = '{0}', description = '{1}', date = '{2}', user_id = {3}, game_id = {4} where id = {5}",
                 _event.Title, _event.Description, _event.Date.ToString("yyyy-MM-dd HH:mm:ss.fff"), _event.UserId, _event.GameId, _event.Id));
+            _event = GetEventWhere($"id = {_event.Id}");
         }
 
         public void DeleteEventWhere(string condition)

@@ -19,12 +19,12 @@ namespace ProgrammingTechnologies.Services
 
         #region CRUD
 
-        public void CreateUser(User user)
+        public void CreateUser(ref User user)
         {
             string instruction = string.Format("insert into Users (name, last_name, email, password) values" +
                                                "('{0}', '{1}', '{2}', '{3}')", user.Name, user.LastName, user.Email, user.Password);
-            Console.WriteLine(instruction);
             database.ExecuteInstruction(instruction);
+            user = GetUserWhere($"email = '{user.Email}'");
         }
 
         public User GetUserWhere(string condition)
@@ -41,10 +41,11 @@ namespace ProgrammingTechnologies.Services
             };
         }
 
-        public void UpdateUser(User user)
+        public void UpdateUser(ref User user)
         {
             database.ExecuteInstruction(string.Format("update Users set name = '{0}', last_name = '{1}', email = '{2}', password = '{3}' where id = {4}",
                 user.Name, user.LastName, user.Email, user.Password, user.Id));
+            user = GetUserWhere($"id = {user.Id}");
         }
 
         public void DeleteUserWhere(string condition)

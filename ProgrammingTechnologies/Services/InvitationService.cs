@@ -16,12 +16,13 @@ namespace ProgrammingTechnologies.Services
 
         #region CRUD
 
-        public void CreateInvitation(Invitation invitation)
+        public void CreateInvitation(ref Invitation invitation)
         {
             string instruction = string.Format("insert into Invitations (user_id, event_id) values " +
                 "({0}, {1})", invitation.UserId, invitation.EventId);
             Console.WriteLine(instruction);
             database.ExecuteInstruction(instruction);
+            invitation = GetInvitationWhere($"user_id = {invitation.UserId} and event_id = {invitation.EventId}");
         }
 
         public Invitation GetInvitationWhere(string condition)
@@ -36,11 +37,12 @@ namespace ProgrammingTechnologies.Services
             };
         }
 
-        public void UpdateInvitation(Invitation invitation)
+        public void UpdateInvitation(ref Invitation invitation)
         {
             Console.WriteLine(invitation.UserId);
             database.ExecuteInstruction(string.Format("update Invitations set user_id = {0}, event_id = {1} where id = {2}",
                 invitation.UserId, invitation.EventId, invitation.Id));
+            invitation = GetInvitationWhere($"id = {invitation.Id}");
         }
 
         public void DeleteInvitationWhere(string condition)
@@ -71,7 +73,7 @@ namespace ProgrammingTechnologies.Services
             return invitations;
         }
 
-        public List<Invitation> GetAllinvitationsWhere(string condition)
+        public List<Invitation> GetAllInvitationsWhere(string condition)
         {
             string query = string.Format("select * from Invitations where {0}", condition);
             DataTable result = database.ExecuteQuery(query);

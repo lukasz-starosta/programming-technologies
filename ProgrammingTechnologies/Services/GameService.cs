@@ -16,12 +16,13 @@ namespace ProgrammingTechnologies.Services
 
         #region CRUD
 
-        public void CreateGame(Game game)
+        public void CreateGame(ref Game game)
         {
             string instruction = string.Format("insert into Games (title, description, category, user_id) values " + 
                 "('{0}', '{1}', {2}, {3})", game.Title, game.Description, game.Category, game.UserId );
             Console.WriteLine(instruction);
             database.ExecuteInstruction(instruction);
+            game = GetGameWhere($"title = '{game.Title}' and description = '{game.Description}'");
         }
 
         public Game GetGameWhere(string condition)
@@ -38,10 +39,11 @@ namespace ProgrammingTechnologies.Services
             };
         }
 
-        public void UpdateGame(Game game)
+        public void UpdateGame(ref Game game)
         {
             database.ExecuteInstruction(string.Format("update Games set title = '{0}', description = '{1}', category = {2}, user_id = {3} where id = {4}",
                 game.Title, game.Description, game.Category, game.UserId, game.Id));
+            game = GetGameWhere($"id = {game.Id}");
         }
 
         public void DeleteGameWhere(string condition)
@@ -56,7 +58,7 @@ namespace ProgrammingTechnologies.Services
 
         #endregion
 
-        public List<Game> GetAllUsers()
+        public List<Game> GetAllGames()
         {
             DataTable result = database.ExecuteQuery("select * from Games");
             List<Game> games = new List<Game>();
@@ -67,7 +69,7 @@ namespace ProgrammingTechnologies.Services
                     Id = Convert.ToInt32(row["id"]),
                     Title = row["title"].ToString(),
                     Description = row["description"].ToString(),
-                    Category = Convert.ToInt32(row["email"]),
+                    Category = Convert.ToInt32(row["category"]),
                     UserId = Convert.ToInt32(row["user_id"])
                 });
             }
@@ -86,7 +88,7 @@ namespace ProgrammingTechnologies.Services
                     Id = Convert.ToInt32(row["id"]),
                     Title = row["title"].ToString(),
                     Description = row["description"].ToString(),
-                    Category = Convert.ToInt32(row["email"]),
+                    Category = Convert.ToInt32(row["category"]),
                     UserId = Convert.ToInt32(row["user_id"])
                 });
             }

@@ -30,36 +30,33 @@ namespace ProgrammingTechnologiesTest.Services
             GameService gameService = new GameService(databaseService);
             EventService eventService = new EventService(databaseService);
 
-            userService.CreateUser(new User()
+            user = new User()
             {
                 Name = "EventServiceTest",
                 LastName = "Test",
                 Email = "test@tes.com",
                 Password = "password"
-            });
+            };
+            userService.CreateUser(ref user);
 
-            user = userService.GetUserWhere("name = 'EventServiceTest'");
-
-            gameService.CreateGame(new Game()
+            game = new Game()
             {
                 Title = "EventServiceTestGame",
                 Description = "Test",
                 Category = 1,
                 UserId = user.Id
-            });
+            };
+            gameService.CreateGame(ref game);
 
-            game = gameService.GetGameWhere("title = 'EventServiceTestGame'");
-
-            eventService.CreateEvent(new Event()
+            _event = new Event()
             {
                 Title = "EventForEventService",
                 Description = "Test",
                 Date = System.DateTime.Now,
                 UserId = user.Id,
                 GameId = game.Id
-            });
-
-            _event = eventService.GetEventWhere("title = 'EventForEventService'");
+            };
+            eventService.CreateEvent(ref _event);
         }
 
         [TestCleanup]
@@ -70,6 +67,7 @@ namespace ProgrammingTechnologiesTest.Services
             GameService gameService = new GameService(databaseService);
             EventService eventService = new EventService(databaseService);
 
+            databaseService.ExecuteInstruction("delete from Invitations");
             eventService.DeleteEvent(_event);
             gameService.DeleteGame(game);
             userService.DeleteUser(user);
@@ -81,9 +79,9 @@ namespace ProgrammingTechnologiesTest.Services
             Invitation invitation = GetNewInvitation();
 
             InvitationService invitationService = new InvitationService(new DatabaseService());
+            invitationService.CreateInvitation(ref invitation);
 
-            invitationService.CreateInvitation(invitation);
-            invitationService.DeleteInvitationWhere($"user_id = {user.Id} and event_id = {_event.Id}");
+            Assert.IsNotNull(invitation.Id);
         }
 
         [TestMethod]
@@ -94,26 +92,24 @@ namespace ProgrammingTechnologiesTest.Services
             DatabaseService databaseService = new DatabaseService();
             InvitationService invitationService = new InvitationService(databaseService);
 
-            invitationService.CreateInvitation(invitation);
-            invitation = invitationService.GetInvitationWhere($"user_id = {user.Id} and event_id = {_event.Id}");
+            invitationService.CreateInvitation(ref invitation);
 
             UserService userService = new UserService(databaseService);
-            userService.CreateUser(new User()
+            User replacement = new User()
             {
                 Name = "Replacement",
                 LastName = "Test",
                 Email = "test@test.com",
                 Password = "password"
-            });
-            User replacement = userService.GetUserWhere("name = 'Replacement'");
-            Console.WriteLine(replacement.Id);
+            };
+            userService.CreateUser(ref replacement);
+            replacement = userService.GetUserWhere("name = 'Replacement'");
 
             Assert.AreEqual(user.Id, invitation.UserId);
 
             invitation.UserId = replacement.Id;
 
-            invitationService.UpdateInvitation(invitation);
-            invitation = invitationService.GetInvitationWhere($"event_id = {_event.Id}");
+            invitationService.UpdateInvitation(ref invitation);
 
             Assert.AreEqual(replacement.Id, invitation.UserId);
 
@@ -127,7 +123,7 @@ namespace ProgrammingTechnologiesTest.Services
             Invitation invitation = GetNewInvitation();
 
             InvitationService invitationService = new InvitationService(new DatabaseService());
-            invitationService.CreateInvitation(invitation);
+            invitationService.CreateInvitation(ref invitation);
 
             Invitation result = invitationService.GetInvitationWhere($"user_id = {user.Id} and event_id = {_event.Id}");
             Assert.AreEqual(invitation.UserId, result.UserId);
@@ -143,11 +139,11 @@ namespace ProgrammingTechnologiesTest.Services
 
             for (int i = 0; i < 10; i++)
             {
-                Invitation invitation= GetNewInvitation();
-                invitationService.CreateInvitation(invitation);
+                Invitation invitation = GetNewInvitation();
+                invitationService.CreateInvitation(ref invitation);
             }
 
-            List<Invitation> invitations = invitationService.GetAllinvitationsWhere($"user_id = {user.Id}");
+            List<Invitation> invitations = invitationService.GetAllInvitationsWhere($"user_id = {user.Id}");
 
             Assert.AreEqual(10, invitations.Count);
 
@@ -168,10 +164,10 @@ namespace ProgrammingTechnologiesTest.Services
             for (int i = 0; i < 10; i++)
             {
                 Invitation invitation = GetNewInvitation();
-                invitationService.CreateInvitation(invitation);
+                invitationService.CreateInvitation(ref invitation);
             }
 
-            List<Invitation> invitations = invitationService.GetAllinvitationsWhere($"user_id = {user.Id}");
+            List<Invitation> invitations = invitationService.GetAllInvitationsWhere($"user_id = {user.Id}");
 
             Assert.AreEqual(10, invitations.Count);
 
@@ -185,8 +181,7 @@ namespace ProgrammingTechnologiesTest.Services
 
             InvitationService invitationService = new InvitationService(new DatabaseService());
 
-            invitationService.CreateInvitation(invitation);
-            invitation = invitationService.GetInvitationWhere($"user_id = {user.Id}");
+            invitationService.CreateInvitation(ref invitation);
 
             int invitationsBefore = invitationService.GetAllInvitations().Count;
 
