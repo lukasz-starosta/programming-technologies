@@ -12,9 +12,9 @@ namespace ProgrammingTechnologies.Services
     {
         DatabaseService database;
 
-        public UserService()
+        public UserService(DatabaseService databaseService)
         {
-            database = new DatabaseService();
+            database = databaseService;
         }
 
         #region CRUD

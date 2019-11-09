@@ -26,8 +26,9 @@ namespace ProgrammingTechnologiesTest.Services
         [TestInitialize]
         public void TestInitialize()
         {
-            UserService userService = new UserService();
-            GameService gameService = new GameService();
+            DatabaseService databaseService = new DatabaseService();
+            UserService userService = new UserService(databaseService);
+            GameService gameService = new GameService(databaseService);
 
             userService.CreateUser(new User()
             {
@@ -53,8 +54,9 @@ namespace ProgrammingTechnologiesTest.Services
         [TestCleanup]
         public void TestCleanup()
         {
-            UserService userService = new UserService();
-            GameService gameService = new GameService();
+            DatabaseService databaseService = new DatabaseService();
+            UserService userService = new UserService(databaseService);
+            GameService gameService = new GameService(databaseService);
 
             gameService.DeleteGame(game);
             userService.DeleteUser(user);
@@ -65,7 +67,7 @@ namespace ProgrammingTechnologiesTest.Services
         {
             Event _event = getNewEvent();
 
-            EventService eventService = new EventService();
+            EventService eventService = new EventService(new DatabaseService());
 
             eventService.CreateEvent(_event);
             eventService.DeleteEventWhere("title = 'EventForEventService'");
@@ -76,7 +78,7 @@ namespace ProgrammingTechnologiesTest.Services
         {
             Event _event = getNewEvent();
 
-            EventService eventService = new EventService();
+            EventService eventService = new EventService(new DatabaseService());
 
             eventService.CreateEvent(_event);
             _event = eventService.GetEventWhere("title = 'EventForEventService'");
@@ -96,7 +98,7 @@ namespace ProgrammingTechnologiesTest.Services
         {
             Event _event = getNewEvent();
 
-            EventService eventService = new EventService();
+            EventService eventService = new EventService(new DatabaseService());
 
             eventService.CreateEvent(_event);
             Event result = eventService.GetEventWhere("title = 'EventForEventService'");
@@ -109,7 +111,7 @@ namespace ProgrammingTechnologiesTest.Services
         [TestMethod]
         public void TestGetAllEventsWhere()
         {
-            EventService eventService = new EventService();
+            EventService eventService = new EventService(new DatabaseService());
 
             for (int i = 0; i < 10; i++)
             {
@@ -132,7 +134,7 @@ namespace ProgrammingTechnologiesTest.Services
         [TestMethod]
         public void TestGetAll()
         {
-            EventService eventService = new EventService();
+            EventService eventService = new EventService(new DatabaseService());
 
             int eventsBefore = eventService.GetAllEvents().Count;
 
@@ -154,7 +156,7 @@ namespace ProgrammingTechnologiesTest.Services
         {
             Event _event = getNewEvent();
 
-            EventService eventService = new EventService();
+            EventService eventService = new EventService(new DatabaseService());
 
             eventService.CreateEvent(_event);
             _event = eventService.GetEventWhere("title = 'EventForEventService'");

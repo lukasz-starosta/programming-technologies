@@ -9,9 +9,9 @@ namespace ProgrammingTechnologies.Services
     {
         private DatabaseService database;
 
-        public EventService()
+        public EventService(DatabaseService databaseService)
         {
-            database = new DatabaseService();
+            database = databaseService;
         }
 
         #region CRUD

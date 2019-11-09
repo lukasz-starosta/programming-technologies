@@ -19,14 +19,14 @@ namespace ProgrammingTechnologiesTest.Services
                 LastName = "Doe",
                 Password = "password"
             };
-            UserService service = new UserService();
+            UserService service = new UserService(new DatabaseService());
             service.CreateUser(user);
         }
 
         [TestMethod]
         public void TestReadUser()
         {
-            UserService service = new UserService();
+            UserService service = new UserService(new DatabaseService());
             User user = service.GetUserWhere("name = 'John'");
             Assert.AreEqual("John", user.Name);
         }
@@ -34,7 +34,7 @@ namespace ProgrammingTechnologiesTest.Services
         [TestMethod]
         public void TestUpdateUser()
         {
-            UserService service = new UserService();
+            UserService service = new UserService(new DatabaseService());
             User user = service.GetUserWhere("name = 'John'");
             user.LastName = "Dobrik";
             service.UpdateUser(user);
@@ -45,7 +45,7 @@ namespace ProgrammingTechnologiesTest.Services
         [TestMethod]
         public void TestGetAllUsers()
         {
-            UserService service = new UserService();
+            UserService service = new UserService(new DatabaseService());
             List<User> users = service.GetAllUsers();
             foreach (User user in users)
             {
@@ -56,7 +56,7 @@ namespace ProgrammingTechnologiesTest.Services
         [TestMethod]
         public void TestGetAllUsersWhere()
         {
-            UserService service = new UserService();
+            UserService service = new UserService(new DatabaseService());
             List<User> users = service.GetAllUsersWhere("last_name = 'Dobrik'");
             foreach (User user in users)
             {
@@ -67,7 +67,7 @@ namespace ProgrammingTechnologiesTest.Services
         [TestMethod]
         public void TestDeleteUser()
         {
-            UserService service = new UserService();
+            UserService service = new UserService(new DatabaseService());
             service.DeleteUserWhere("last_name = 'Dobrik'");
         }
     }

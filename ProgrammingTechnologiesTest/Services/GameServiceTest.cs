@@ -17,7 +17,7 @@ namespace ProgrammingTechnologiesTest.Services
                 LastName = "Testing",
                 Password = "password"
             };
-            UserService userService = new UserService();
+            UserService userService = new UserService(new DatabaseService());
             userService.CreateUser(user);
             user = userService.GetUserWhere("email = 'test@test.com'");
             Game game = new Game()
@@ -27,7 +27,7 @@ namespace ProgrammingTechnologiesTest.Services
                 Category = 1,
                 UserId = user.Id
             };
-            GameService service = new GameService();
+            GameService service = new GameService(new DatabaseService());
             service.CreateGame(game);
             service.DeleteGameWhere($"user_id = {user.Id}");
             userService.DeleteUser(user);
@@ -43,7 +43,7 @@ namespace ProgrammingTechnologiesTest.Services
                 LastName = "Testing",
                 Password = "password"
             };
-            UserService userService = new UserService();
+            UserService userService = new UserService(new DatabaseService());
             userService.CreateUser(user);
             user = userService.GetUserWhere("email = 'test@test.com'");
             Game game = new Game()
@@ -53,7 +53,7 @@ namespace ProgrammingTechnologiesTest.Services
                 Category = 1,
                 UserId = user.Id
             };
-            GameService service = new GameService();
+            GameService service = new GameService(new DatabaseService());
             service.CreateGame(game);
             Game result = service.GetGameWhere($"title = '{game.Title}'");
             Assert.AreEqual(game.Title, result.Title);
@@ -71,7 +71,7 @@ namespace ProgrammingTechnologiesTest.Services
                 LastName = "Testing",
                 Password = "password"
             };
-            UserService userService = new UserService();
+            UserService userService = new UserService(new DatabaseService());
             userService.CreateUser(user);
             user = userService.GetUserWhere("email = 'test@test.com'");
             Game game = new Game()
@@ -81,7 +81,7 @@ namespace ProgrammingTechnologiesTest.Services
                 Category = 1,
                 UserId = user.Id
             };
-            GameService service = new GameService();
+            GameService service = new GameService(new DatabaseService());
             service.CreateGame(game);
             game = service.GetGameWhere($"title = '{game.Title}'");
             game.Title = "wujaa";
@@ -103,7 +103,7 @@ namespace ProgrammingTechnologiesTest.Services
                 LastName = "Testing",
                 Password = "password"
             };
-            UserService userService = new UserService();
+            UserService userService = new UserService(new DatabaseService());
             userService.CreateUser(user);
             user = userService.GetUserWhere("email = 'test@test.com'");
             Game game = new Game()
@@ -113,7 +113,7 @@ namespace ProgrammingTechnologiesTest.Services
                 Category = 1,
                 UserId = user.Id
             };
-            GameService service = new GameService();
+            GameService service = new GameService(new DatabaseService());
             service.CreateGame(game);
             service.DeleteGameWhere($"user_id = {user.Id}");
             userService.DeleteUser(user);

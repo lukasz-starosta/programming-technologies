@@ -55,6 +55,7 @@
     <Compile Include="Services\DatabaseServiceTest.cs" />
     <Compile Include="Services\EventServiceTest.cs" />
     <Compile Include="Services\GameServiceTest.cs" />
+    <Compile Include="Services\InvitationServiceTest.cs" />
     <Compile Include="Services\UserServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -66,7 +67,6 @@
       <Name>ProgrammingTechnologies</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Database.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

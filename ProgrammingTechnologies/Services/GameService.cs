@@ -9,9 +9,9 @@ namespace ProgrammingTechnologies.Services
     {
         private DatabaseService database;
 
-        public GameService()
+        public GameService(DatabaseService databaseService)
         {
-            database = new DatabaseService();
+            database = databaseService;
         }
 
         #region CRUD

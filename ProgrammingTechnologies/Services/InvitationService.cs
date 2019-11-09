@@ -9,9 +9,9 @@ namespace ProgrammingTechnologies.Services
     {
         private DatabaseService database;
 
-        public InvitationService()
+        public InvitationService(DatabaseService databaseService)
         {
-            database = new DatabaseService();
+            database = databaseService;
         }
 
         #region CRUD
@@ -19,7 +19,7 @@ namespace ProgrammingTechnologies.Services
         public void CreateInvitation(Invitation invitation)
         {
             string instruction = string.Format("insert into Invitations (user_id, event_id) values " +
-                "({0}, {1)", invitation.UserId, invitation.EventId);
+                "({0}, {1})", invitation.UserId, invitation.EventId);
             Console.WriteLine(instruction);
             database.ExecuteInstruction(instruction);
         }
@@ -38,6 +38,7 @@ namespace ProgrammingTechnologies.Services
 
         public void UpdateInvitation(Invitation invitation)
         {
+            Console.WriteLine(invitation.UserId);
             database.ExecuteInstruction(string.Format("update Invitations set user_id = {0}, event_id = {1} where id = {2}",
                 invitation.UserId, invitation.EventId, invitation.Id));
         }
@@ -73,7 +74,7 @@ namespace ProgrammingTechnologies.Services
         public List<Invitation> GetAllinvitationsWhere(string condition)
         {
             string query = string.Format("select * from Invitations where {0}", condition);
-            DataTable result = database.ExecuteQuery(condition);
+            DataTable result = database.ExecuteQuery(query);
             List<Invitation> invitations = new List<Invitation>();
             foreach (DataRow row in result.Rows)
             {
