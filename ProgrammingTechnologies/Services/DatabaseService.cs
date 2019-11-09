@@ -18,8 +18,8 @@ namespace ProgrammingTechnologies.Services
         public DatabaseService()
         {
             string currentDirectory = Environment.CurrentDirectory;
-            string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.FullName;
-            string databaseDirectory = Path.Combine(projectDirectory, "ProgrammingTechnologies\\Database.mdf");
+            string projectDirectory = Directory.GetParent(currentDirectory).Parent.FullName;
+            string databaseDirectory = Path.Combine(projectDirectory, "Database.mdf");
             _connectionString = $"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={databaseDirectory};Integrated Security=True";
         }
 
