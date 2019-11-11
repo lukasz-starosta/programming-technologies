@@ -1,0 +1,19 @@
+﻿enum Category
+{
+    Educational,
+    Cards,
+    Strategy,
+    Adventure,
+    Puzzles,
+    Economy,
+    Party,
+    Arcade,
+    Gambling,
+    RPG,
+    Logical,
+    Cooperation,
+    Children,
+    Family,
+    Wargaming,
+    Legacy
+}

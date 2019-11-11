@@ -47,10 +47,21 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataTest.cs" />
+    <Compile Include="Helpers\DatabaseSeeder.cs" />
+    <Compile Include="Managers\EventManagerTest.cs" />
+    <Compile Include="Managers\GameManagerTest.cs" />
+    <Compile Include="Managers\InvitationManagerTest.cs" />
+    <Compile Include="Managers\UserManagerTest.cs" />
+    <Compile Include="Models\UserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DatabaseServiceTest.cs" />
+    <Compile Include="Services\EventServiceTest.cs" />
+    <Compile Include="Services\GameServiceTest.cs" />
+    <Compile Include="Services\InvitationServiceTest.cs" />
+    <Compile Include="Services\UserServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -60,6 +71,15 @@
       <Project>{d6d257f9-477b-4087-aa82-6c4ac276df39}</Project>
       <Name>ProgrammingTechnologies</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Database.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Database_log.ldf">
+      <DependentUpon>Database.mdf</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
