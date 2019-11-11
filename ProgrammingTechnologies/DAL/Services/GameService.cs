@@ -79,7 +79,7 @@ namespace ProgrammingTechnologies.DAL.Services
         public List<Game> GetAllServicedObjectsWhere(string condition)
         {
             string query = string.Format("select * from Games where {0}", condition);
-            DataTable result = database.ExecuteQuery(condition);
+            DataTable result = database.ExecuteQuery(query);
             List<Game> games = new List<Game>();
             foreach (DataRow row in result.Rows)
             {

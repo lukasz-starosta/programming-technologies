@@ -1,5 +1,6 @@
 ﻿using ProgrammingTechnologies.BO.Models;
 using ProgrammingTechnologies.Helpers;
+using System;
 using System.Collections.Generic;
 
 namespace ProgrammingTechnologies.BLL.Managers
@@ -74,6 +75,7 @@ namespace ProgrammingTechnologies.BLL.Managers
                     userIds += $"{invitations[i].EventId}, ";
                 }
             }
+            Console.WriteLine($"id in {userIds}");
             return userService.GetAllServicedObjectsWhere($"id in {userIds}");
         }
     }

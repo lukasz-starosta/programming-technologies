@@ -50,6 +50,10 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\DatabaseSeeder.cs" />
+    <Compile Include="Managers\EventManagerTest.cs" />
+    <Compile Include="Managers\GameManagerTest.cs" />
+    <Compile Include="Managers\InvitationManagerTest.cs" />
     <Compile Include="Managers\UserManagerTest.cs" />
     <Compile Include="Models\UserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
