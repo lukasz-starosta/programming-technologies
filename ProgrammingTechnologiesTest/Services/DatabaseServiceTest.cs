@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ProgrammingTechnologies.Services;
-using System;
+using ProgrammingTechnologies.DAL.Services;
 using System.Data;
 
 namespace ProgrammingTechnologiesTest.Services

@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ProgrammingTechnologies.Models;
+using ProgrammingTechnologies.BO.Models;
 
 namespace ProgrammingTechnologiesTest.Models
 {

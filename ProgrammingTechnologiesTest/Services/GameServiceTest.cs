@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ProgrammingTechnologies.Models;
-using ProgrammingTechnologies.Services;
+using ProgrammingTechnologies.BO.Models;
+using ProgrammingTechnologies.DAL.Services;
 
 namespace ProgrammingTechnologiesTest.Services
 {

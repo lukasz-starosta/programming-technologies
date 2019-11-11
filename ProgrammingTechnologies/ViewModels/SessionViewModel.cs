@@ -1,5 +1,5 @@
 ﻿using ProgrammingTechnologies.Helpers;
-using ProgrammingTechnologies.Models;
+using ProgrammingTechnologies.BO.Models;
 using System.Windows.Input;
 
 namespace ProgrammingTechnologies.ViewModels
