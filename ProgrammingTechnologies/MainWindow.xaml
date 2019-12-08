@@ -6,7 +6,39 @@
         xmlns:local="clr-namespace:ProgrammingTechnologies"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <Window.Resources>
+        <ControlTemplate x:Key="MasterDetail" TargetType="ContentControl" >
+            <Grid Height="Auto" Margin="-3, -3, 0, 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <ListBox Name="Master" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,528.6,0" Padding="5, 15, 0, 15">
+                    <ListBoxItem>ListBox Item #1</ListBoxItem>
+                    <ListBoxItem>ListBox Item #2</ListBoxItem>
+                    <ListBoxItem>ListBox Item #3</ListBoxItem>
+                </ListBox>
+                <ContentControl x:Name="Detail" Grid.Column="2" Margin="0,-13,0,0" Height="390" Width="529">
+                    <Grid Background="AliceBlue" >
+                        <Label Content="{TemplateBinding Content}" HorizontalAlignment="Left" Margin="420,0,0,0" VerticalAlignment="Top" Height="29" Width="74"/>
+                    </Grid>
+                </ContentControl>
+            </Grid>
+        </ControlTemplate>
+    </Window.Resources>
+    <TabControl Height="450" VerticalAlignment="Top" HorizontalAlignment="Left" Width="800">
+        <TabItem Header="Games" Height="40" Width="100"  TabIndex="1" Margin="-2,-4,0,0">
+            <ContentControl Content="Game name" Template="{StaticResource MasterDetail}" />
+        </TabItem>
+        <TabItem Header="Events" Height="40" Width="100" TabIndex="2" Margin="-1.2,-2,1.2,2" VerticalAlignment="Bottom">
+            <ContentControl Content="Event name" Template="{StaticResource MasterDetail}" />
+        </TabItem>
+        <TabItem Header="Invitations" Width="100" Height="40" TabIndex="3" Margin="-3,-2,3,2">
+            <ContentControl Content="Invitation" Template="{StaticResource MasterDetail}" />
+        </TabItem>
+        <TabItem Header="Users" Width="101" Height="40" TabIndex="4" Margin="-3.2,-2,0,2" HorizontalAlignment="Left" >
+            <ContentControl Content="User name" Template="{StaticResource MasterDetail}"/>
+        </TabItem>
+    </TabControl>
+
 </Window>
