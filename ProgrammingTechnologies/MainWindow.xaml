@@ -1,12 +1,45 @@
-﻿<Window x:Class="ProgrammingTechnologies.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ProgrammingTechnologies"
+        xmlns:src="clr-namespace:ProgrammingTechnologies.BO.Models"
+        x:Class="ProgrammingTechnologies.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="400" Width="500">
+    <Window.Resources>
+        <DataTemplate x:Key="GameDataTemplate" DataType="{x:Type src:Game}">
+            <Grid Background="AliceBlue">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="User id:" Grid.Row="0" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
+                <TextBox Text="{Binding Path=UserId}" Width="120" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
+                <Label Content="Category id: " Grid.Row="1" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                <TextBox Text="{Binding Path=Category}" Width="120" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
+                <Label Content="Description: " Grid.Row="2" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
+                <TextBox Text="{Binding Path=Description}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Width="300" Height="200" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top"/>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <ListBox Name="Master" ItemsSource="{Binding Games}" IsSynchronizedWithCurrentItem="True" Grid.Column="0" Grid.ColumnSpan="1" Padding="5, 15, 0, 15">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=Title}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ContentControl Name="Detail" Content="{Binding Games}" ContentTemplate="{StaticResource GameDataTemplate}"  Grid.Column="1" Grid.ColumnSpan="1" />
     </Grid>
 </Window>

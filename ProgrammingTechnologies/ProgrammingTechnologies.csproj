@@ -88,6 +88,7 @@
     <Compile Include="DAL\Services\InvitationService.cs" />
     <Compile Include="DAL\Services\IService.cs" />
     <Compile Include="DAL\Services\UserService.cs" />
+    <Compile Include="ViewModels\GameViewModel.cs" />
     <Compile Include="ViewModels\SessionViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
