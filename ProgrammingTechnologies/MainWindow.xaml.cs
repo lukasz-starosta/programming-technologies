@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProgrammingTechnologies.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,11 +24,7 @@ namespace ProgrammingTechnologies
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
+            DataContext = new GameViewModel();
         }
     }
 }
