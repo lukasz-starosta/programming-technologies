@@ -11,12 +11,13 @@ using System.Windows.Input;
 
 namespace ProgrammingTechnologies.ViewModels
 {
-    internal class GameViewModel
+    internal class GameViewModel : ViewModel
     {
         private UserManager UserManager { get; set; }
         private GameManager GameManager { get; set; }
         public GameViewModel()
         {
+            Name = "Games";
             GameManager = new GameManager(ServiceProvider.GetDatabaseDependentServices);
             UserManager = new UserManager(ServiceProvider.GetDatabaseDependentServices);
 

@@ -24,7 +24,7 @@ namespace ProgrammingTechnologies
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new GameViewModel();
+            DataContext = new MainViewModel();
         }
     }
 }
