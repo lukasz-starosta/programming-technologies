@@ -3,43 +3,56 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:src="clr-namespace:ProgrammingTechnologies.BO.Models"
+        xmlns:vm="clr-namespace:ProgrammingTechnologies.ViewModels"
         x:Class="ProgrammingTechnologies.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="400" Width="500">
+        Title="MainWindow" Height="400" Width="600">
     <Window.Resources>
-        <DataTemplate x:Key="GameDataTemplate" DataType="{x:Type src:Game}">
-            <Grid Background="AliceBlue">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="1*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="User id:" Grid.Row="0" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
-                <TextBox Text="{Binding Path=UserId}" Width="120" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
-                <Label Content="Category id: " Grid.Row="1" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                <TextBox Text="{Binding Path=Category}" Width="120" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
-                <Label Content="Description: " Grid.Row="2" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
-                <TextBox Text="{Binding Path=Description}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Width="300" Height="200" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top"/>
-            </Grid>
-        </DataTemplate>
+        <CollectionViewSource x:Key="Games" Source="{Binding Games}"/>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
-        <ListBox Name="Master" ItemsSource="{Binding Games}" IsSynchronizedWithCurrentItem="True" Grid.Column="0" Grid.ColumnSpan="1" Padding="5, 15, 0, 15">
+        <ListBox Name="Master" SelectedItem="{Binding SelectedGame}" IsSynchronizedWithCurrentItem="True" Grid.Column="0" Grid.ColumnSpan="1" Padding="5, 15, 0, 75">
+            <ListBox.ItemsSource>
+                <CompositeCollection>
+                    <CollectionContainer Collection="{Binding Source={StaticResource Games}}"/>
+                </CompositeCollection>
+            </ListBox.ItemsSource>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Path=Title}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ContentControl Name="Detail" Content="{Binding Games}" ContentTemplate="{StaticResource GameDataTemplate}"  Grid.Column="1" Grid.ColumnSpan="1" />
+        <Grid Background="AliceBlue" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Title:" Grid.Row="0" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
+            <TextBox Name="Title" Text="{Binding SelectedGame.Title, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="180" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top" />
+            <Label Content="{Binding ElementName=Title, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red"  Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Height="50" Margin="5 25 0 0"/>
+            <Label Content="User:" Grid.Row="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
+            <ComboBox ItemsSource="{Binding Users}" DisplayMemberPath="FullName" SelectedValuePath="FullName" SelectedItem="{Binding SelectedGame.GameOwner}" Width="120" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
+            <Label Content="Category: " Grid.Row="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+            <ComboBox Name="Categories" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedGame.ReadableCategory}" Width="120" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
+            <Label Content="Description: " Grid.Row="3" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
+            <Label Content="{Binding ElementName=Description, Path=(Validation.Errors).CurrentItem.ErrorContent}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Foreground="Red" HorizontalAlignment="Left" Margin="10, 25, 0, 0" Width="300" VerticalAlignment="Top"/>
+            <TextBox TextWrapping="Wrap" AcceptsReturn="True" Name="Description" Text="{Binding SelectedGame.Description, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Width="300" Height="100" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top"/>
+
+        </Grid>
+        <Button x:Name="Create" Content="Add a Game" Command="{Binding AddGameCommand}"  Grid.Row="4" Grid.Column="0" Margin="10" Width="100" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
+        <Button x:Name="Submit" Content="Submit" Command="{Binding SubmitGameCommand}"  Grid.Row="4" Grid.Column="1" Margin="10" Width="60" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+        <Button x:Name="Delete" Content="Delete" Command="{Binding DeleteGameCommand}"  Grid.Row="4" Grid.Column="1" Margin="10" Width="60" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
     </Grid>
 </Window>

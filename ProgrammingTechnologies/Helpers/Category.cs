@@ -1,19 +1,22 @@
-﻿enum Category
+﻿namespace ProgrammingTechnologies.Enums
 {
-    Educational,
-    Cards,
-    Strategy,
-    Adventure,
-    Puzzles,
-    Economy,
-    Party,
-    Arcade,
-    Gambling,
-    RPG,
-    Logical,
-    Cooperation,
-    Children,
-    Family,
-    Wargaming,
-    Legacy
+    public enum EnumCategory
+    {
+        Educational,
+        Cards,
+        Strategy,
+        Adventure,
+        Puzzles,
+        Economy,
+        Party,
+        Arcade,
+        Gambling,
+        RPG,
+        Logical,
+        Cooperation,
+        Children,
+        Family,
+        Wargaming,
+        Legacy
+    }
 }
