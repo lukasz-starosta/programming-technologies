@@ -58,5 +58,7 @@ namespace ProgrammingTechnologies.BO.Models
         {
             return SecurePasswordHasher.Verify(password, Password);
         }
+
+        public string FullName { get { return $"{Name} {LastName}"; } }
     }
 }
