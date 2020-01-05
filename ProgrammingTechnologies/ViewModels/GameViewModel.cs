@@ -4,6 +4,7 @@ using ProgrammingTechnologies.Enums;
 using ProgrammingTechnologies.Helpers;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -33,6 +34,8 @@ namespace ProgrammingTechnologies.ViewModels
             Categories = new ObservableCollection<string>(Enum.GetNames(typeof(EnumCategory)));
 
             SubmitGameCommand = new RelayCommand(() => Task.Run(() => UpdateGame()), () => SelectedGame.IsValid);
+            AddGameCommand = new RelayCommand(() => Task.Run(() => AddGame()));
+            DeleteGameCommand = new RelayCommand(() => Task.Run(() => DeleteGame()), CanDeleteGame);
         }
 
         public Game SelectedGame
@@ -56,16 +59,59 @@ namespace ProgrammingTechnologies.ViewModels
         }
 
         public ICommand SubmitGameCommand { get; private set; }
+        public ICommand AddGameCommand { get; private set; }
+        public ICommand DeleteGameCommand { get; private set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private User GetGameOwner(Game Game)
         {
-           return Users.Where(User => User.Id == Game.UserId).First();
+            return Users.Where(User => User.Id == Game.UserId).First();
         }
 
+        private void AddGame()
+        {
+            Game newGame = new Game()
+            {
+                // TODO: CHANGE THIS TO CURRENT USER
+                UserId = 135,
+                Title = "New game",
+                Description = "",
+                Category = (int)EnumCategory.Adventure,
+            };
+
+            GameManager.CreateManagedObject(ref newGame);
+
+            // GUI can only be updated by using Dispatcher
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                Games.Add(newGame);
+                SelectedGame = newGame;
+                SelectedGame.GameOwner = GetGameOwner(SelectedGame);
+            });
+        }
         private void UpdateGame()
         {
-            Game newGame = SelectedGame;
-            GameManager.UpdateManagedObject(ref newGame);
+            Game gameToUpdate = SelectedGame;
+            GameManager.UpdateManagedObject(ref gameToUpdate);
+            SelectedGame.GameOwner = GetGameOwner(gameToUpdate);
+        }
+
+        // Ensure at least 1 game is present
+        private bool CanDeleteGame() { return Games.Count > 1; }
+        private void DeleteGame()
+        {
+            int currentGameIndex = Games.IndexOf(SelectedGame);
+            // Get previous game (but game at 0 if there is no game left)
+            int previousGameIndex = currentGameIndex > 0 ? currentGameIndex - 1 : 0;
+            GameManager.DeleteManagedObject(SelectedGame);
+
+            // GUI can only be updated by using Dispatcher
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                Games.Remove(SelectedGame);
+                SelectedGame = Games[previousGameIndex];
+            });
         }
     }
 }

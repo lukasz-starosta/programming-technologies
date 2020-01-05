@@ -7,12 +7,20 @@
         x:Class="ProgrammingTechnologies.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="400" Width="600">
+    <Window.Resources>
+        <CollectionViewSource x:Key="Games" Source="{Binding Games}"/>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
-        <ListBox Name="Master" ItemsSource="{Binding Games}" SelectedItem="{Binding SelectedGame}" IsSynchronizedWithCurrentItem="True" Grid.Column="0" Grid.ColumnSpan="1" Padding="5, 15, 0, 15">
+        <ListBox Name="Master" SelectedItem="{Binding SelectedGame}" IsSynchronizedWithCurrentItem="True" Grid.Column="0" Grid.ColumnSpan="1" Padding="5, 15, 0, 75">
+            <ListBox.ItemsSource>
+                <CompositeCollection>
+                    <CollectionContainer Collection="{Binding Source={StaticResource Games}}"/>
+                </CompositeCollection>
+            </ListBox.ItemsSource>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Path=Title}" />
@@ -43,6 +51,8 @@
             <TextBox TextWrapping="Wrap" AcceptsReturn="True" Name="Description" Text="{Binding SelectedGame.Description, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Width="300" Height="100" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top"/>
 
         </Grid>
+        <Button x:Name="Create" Content="Add a Game" Command="{Binding AddGameCommand}"  Grid.Row="4" Grid.Column="0" Margin="10" Width="100" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
         <Button x:Name="Submit" Content="Submit" Command="{Binding SubmitGameCommand}"  Grid.Row="4" Grid.Column="1" Margin="10" Width="60" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+        <Button x:Name="Delete" Content="Delete" Command="{Binding DeleteGameCommand}"  Grid.Row="4" Grid.Column="1" Margin="10" Width="60" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
     </Grid>
 </Window>
