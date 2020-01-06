@@ -4,7 +4,6 @@ using ProgrammingTechnologies.Enums;
 using ProgrammingTechnologies.Helpers;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -62,8 +61,6 @@ namespace ProgrammingTechnologies.ViewModels
         public ICommand SubmitGameCommand { get; private set; }
         public ICommand AddGameCommand { get; private set; }
         public ICommand DeleteGameCommand { get; private set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         private User GetGameOwner(Game Game)
         {
