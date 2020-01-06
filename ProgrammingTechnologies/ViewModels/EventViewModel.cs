@@ -4,11 +4,10 @@ using ProgrammingTechnologies.Helpers;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace ProgrammingTechnologies.ViewModels
 {
-    internal class EventViewModel : ViewModel
+    internal class EventViewModel : ViewModel<Event>
     {
         // TODO: get this from session manager
         public User CurrentUser { get; set; }
@@ -23,29 +22,19 @@ namespace ProgrammingTechnologies.ViewModels
             CurrentUser = new User() { Id = 135, Name = "Lukasz", LastName = "Starosta" };
             Games = new ObservableCollection<Game>(GameManager.GetAllManagedObjectsWhere($"user_id = {CurrentUser.Id}"));
 
-            Events = new ObservableCollection<Event>(EventManager.GetAllManagedObjects());
-            SelectedEvent = Events[0];
+            Items = new ObservableCollection<Event>(EventManager.GetAllManagedObjects());
+            SelectedItem = Items[0];
 
-            foreach (Event e in Events)
+            foreach (Event e in Items)
             {
                 e.Game = GetEventGame(e);
             }
 
-            SubmitEventCommand = new RelayCommand(() => Task.Run(() => UpdateEvent()), () => SelectedEvent.IsValid);
-            AddEventCommand = new RelayCommand(() => Task.Run(() => AddEvent()));
-            DeleteEventCommand = new RelayCommand(() => Task.Run(() => DeleteEvent()), CanDeleteEvent);
+            SubmitCommand = new RelayCommand(() => Task.Run(() => UpdateItem()), SelectedItem.isValid);
+            AddCommand = new RelayCommand(() => Task.Run(() => AddItem()));
+            DeleteCommand = new RelayCommand(() => Task.Run(() => DeleteItem()), CanDeleteItem);
         }
 
-        public Event SelectedEvent
-        {
-            get; set;
-        }
-
-        public ObservableCollection<Event> Events
-        {
-            get; set;
-
-        }
         public ObservableCollection<Game> Games
         {
             get; set;
@@ -60,14 +49,10 @@ namespace ProgrammingTechnologies.ViewModels
 
         private Game GetEventGame(Event e)
         {
-            return Games.Where(Game => Game.Id == SelectedEvent.GameId).First();
+            return Games.Where(Game => Game.Id == SelectedItem.GameId).First();
         }
 
-        public ICommand SubmitEventCommand { get; private set; }
-        public ICommand AddEventCommand { get; private set; }
-        public ICommand DeleteEventCommand { get; private set; }
-
-        private void AddEvent()
+        protected override void AddItem()
         {
             Event newEvent = new Event()
             {
@@ -83,32 +68,30 @@ namespace ProgrammingTechnologies.ViewModels
             // GUI can only be updated by using Dispatcher
             App.Current.Dispatcher.Invoke(() =>
             {
-                Events.Add(newEvent);
+                Items.Add(newEvent);
                 newEvent.Game = GetEventGame(newEvent);
-                SelectedEvent = newEvent;
+                SelectedItem = newEvent;
             });
         }
-        private void UpdateEvent()
+        protected override void UpdateItem()
         {
-            Event eventToUpdate = SelectedEvent;
+            Event eventToUpdate = SelectedItem;
             EventManager.UpdateManagedObject(ref eventToUpdate);
-            SelectedEvent.Game = GetEventGame(eventToUpdate);
+            SelectedItem.Game = GetEventGame(eventToUpdate);
         }
 
-        // Ensure at least 1 game is present
-        private bool CanDeleteEvent() { return Events.Count > 1; }
-        private void DeleteEvent()
+        protected override void DeleteItem()
         {
-            int currentEventIndex = Events.IndexOf(SelectedEvent);
+            int currentItemIndex = Items.IndexOf(SelectedItem);
             // Get previous game (but game at 0 if there is no game left)
-            int previousEventIndex = currentEventIndex > 0 ? currentEventIndex - 1 : 0;
-            EventManager.DeleteManagedObject(SelectedEvent);
+            int previousItemIndex = currentItemIndex > 0 ? currentItemIndex - 1 : 0;
+            EventManager.DeleteManagedObject(SelectedItem);
 
             // GUI can only be updated by using Dispatcher
             App.Current.Dispatcher.Invoke(() =>
             {
-                Events.Remove(SelectedEvent);
-                SelectedEvent = Events[previousEventIndex];
+                Items.Remove(SelectedItem);
+                SelectedItem = Items[previousItemIndex];
             });
         }
     }

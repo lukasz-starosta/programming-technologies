@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace ProgrammingTechnologies.ViewModels
 {
-    internal class GameViewModel : ViewModel
+    internal class GameViewModel : ViewModel<Game>
     {
         private UserManager UserManager { get; set; }
         private GameManager GameManager { get; set; }
@@ -20,34 +20,24 @@ namespace ProgrammingTechnologies.ViewModels
             GameManager = new GameManager(ServiceProvider.GetDatabaseDependentServices);
             UserManager = new UserManager(ServiceProvider.GetDatabaseDependentServices);
 
-            Games = new ObservableCollection<Game>(GameManager.GetAllManagedObjects());
-            SelectedGame = Games[0];
+            Items = new ObservableCollection<Game>(GameManager.GetAllManagedObjects());
+            SelectedItem = Items[0];
 
             Users = new ObservableCollection<User>(UserManager.GetAllManagedObjects());
 
             // Assign game owners to games
-            foreach (Game Game in Games)
+            foreach (Game Game in Items)
             {
                 Game.GameOwner = GetGameOwner(Game);
             }
 
             Categories = new ObservableCollection<string>(Enum.GetNames(typeof(EnumCategory)));
 
-            SubmitGameCommand = new RelayCommand(() => Task.Run(() => UpdateGame()), () => SelectedGame.IsValid);
-            AddGameCommand = new RelayCommand(() => Task.Run(() => AddGame()));
-            DeleteGameCommand = new RelayCommand(() => Task.Run(() => DeleteGame()), CanDeleteGame);
+            SubmitCommand = new RelayCommand(() => Task.Run(() => UpdateItem()), SelectedItem.isValid);
+            AddCommand = new RelayCommand(() => Task.Run(() => AddItem()));
+            DeleteCommand = new RelayCommand(() => Task.Run(() => DeleteItem()), CanDeleteItem);
         }
 
-        public Game SelectedGame
-        {
-            get; set;
-        }
-
-        public ObservableCollection<Game> Games
-        {
-            get; set;
-
-        }
         public ObservableCollection<User> Users
         {
             get; set;
@@ -58,16 +48,12 @@ namespace ProgrammingTechnologies.ViewModels
             get; set;
         }
 
-        public ICommand SubmitGameCommand { get; private set; }
-        public ICommand AddGameCommand { get; private set; }
-        public ICommand DeleteGameCommand { get; private set; }
-
         private User GetGameOwner(Game Game)
         {
             return Users.Where(User => User.Id == Game.UserId).First();
         }
 
-        private void AddGame()
+        protected override void AddItem()
         {
             Game newGame = new Game()
             {
@@ -83,32 +69,30 @@ namespace ProgrammingTechnologies.ViewModels
             // GUI can only be updated by using Dispatcher
             App.Current.Dispatcher.Invoke(() =>
             {
-                Games.Add(newGame);
-                SelectedGame = newGame;
-                SelectedGame.GameOwner = GetGameOwner(SelectedGame);
+                Items.Add(newGame);
+                SelectedItem = newGame;
+                SelectedItem.GameOwner = GetGameOwner(SelectedItem);
             });
         }
-        private void UpdateGame()
+        protected override void UpdateItem()
         {
-            Game gameToUpdate = SelectedGame;
+            Game gameToUpdate = SelectedItem;
             GameManager.UpdateManagedObject(ref gameToUpdate);
-            SelectedGame.GameOwner = GetGameOwner(gameToUpdate);
+            SelectedItem.GameOwner = GetGameOwner(gameToUpdate);
         }
 
-        // Ensure at least 1 game is present
-        private bool CanDeleteGame() { return Games.Count > 1; }
-        private void DeleteGame()
+        protected override void DeleteItem()
         {
-            int currentGameIndex = Games.IndexOf(SelectedGame);
+            int currentGameIndex = Items.IndexOf(SelectedItem);
             // Get previous game (but game at 0 if there is no game left)
             int previousGameIndex = currentGameIndex > 0 ? currentGameIndex - 1 : 0;
-            GameManager.DeleteManagedObject(SelectedGame);
+            GameManager.DeleteManagedObject(SelectedItem);
 
             // GUI can only be updated by using Dispatcher
             App.Current.Dispatcher.Invoke(() =>
             {
-                Games.Remove(SelectedGame);
-                SelectedGame = Games[previousGameIndex];
+                Items.Remove(SelectedItem);
+                SelectedItem = Items[previousGameIndex];
             });
         }
     }

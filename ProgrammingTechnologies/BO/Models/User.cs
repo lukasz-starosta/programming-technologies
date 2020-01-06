@@ -60,5 +60,10 @@ namespace ProgrammingTechnologies.BO.Models
         }
 
         public string FullName { get { return $"{Name} {LastName}"; } }
+
+        public override bool isValid()
+        {
+            return true;
+        }
     }
 }

@@ -163,8 +163,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="ViewModels\.keep" />
-    <None Include="Views\.keep" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

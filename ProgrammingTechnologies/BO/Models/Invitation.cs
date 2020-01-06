@@ -25,5 +25,9 @@
             }
         }
 
+        public override bool isValid()
+        {
+            return true;
+        }
     }
 }
