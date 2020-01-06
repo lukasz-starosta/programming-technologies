@@ -7,17 +7,17 @@
              mc:Ignorable="d" 
   d:DesignHeight="400" d:DesignWidth="600">
     <UserControl.Resources>
-        <CollectionViewSource x:Key="Events" Source="{Binding Events}"/>
+        <CollectionViewSource x:Key="Invitations" Source="{Binding Items}"/>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
-        <ListBox Name="Master" SelectedItem="{Binding SelectedEvent}" IsSynchronizedWithCurrentItem="True" Grid.Column="0" Grid.ColumnSpan="1" Padding="5, 15, 0, 75">
+        <ListBox Name="Master" SelectedItem="{Binding SelectedItem}" IsSynchronizedWithCurrentItem="True" Grid.Column="0" Grid.ColumnSpan="1" Padding="5, 15, 0, 75">
             <ListBox.ItemsSource>
                 <CompositeCollection>
-                    <CollectionContainer Collection="{Binding Source={StaticResource Events}}"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource Invitations}}"/>
                 </CompositeCollection>
             </ListBox.ItemsSource>
             <ListBox.ItemTemplate>
@@ -31,30 +31,20 @@
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
             <Label Content="Title:" Grid.Row="0" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
-            <TextBox Name="Title" Text="{Binding SelectedEvent.Title, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="180" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top" />
-            <Label Content="{Binding ElementName=Title, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red"  Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Height="50" Margin="5 25 0 0"/>
+            <TextBlock Name="Title" Text="{Binding SelectedItem.Title}" Width="180" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top" />
             <Label Content="User:" Grid.Row="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
-            <TextBlock Text="{Binding CurrentUser.FullName}" Width="120" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
-            <Label Content="Game: " Grid.Row="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-            <ComboBox Name="Games" ItemsSource="{Binding Games}" SelectedItem="{Binding SelectedEvent.Game}" DisplayMemberPath="Title" Width="150" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
-            <Label Content="Date: " Grid.Row="3" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-            <DatePicker SelectedDate="{Binding SelectedEvent.Date}" Grid.Row="3" Grid.Column="1" Margin="10" Width="150" HorizontalAlignment="Left"/>
-            <Label Content="Description: " Grid.Row="4" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
-            <Label Content="{Binding ElementName=Description, Path=(Validation.Errors).CurrentItem.ErrorContent}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Foreground="Red" HorizontalAlignment="Left" Margin="10, 25, 0, 0" Width="300" VerticalAlignment="Top"/>
-            <TextBox TextWrapping="Wrap" AcceptsReturn="True" Name="Description" Text="{Binding SelectedEvent.Description, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Width="300" Height="50" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top"/>
-
+            <ComboBox ItemsSource="{Binding Users}" SelectedItem="{Binding SelectedItem.User}" DisplayMemberPath="FullName"  Width="120" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
+            <Label Content="Event: " Grid.Row="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+            <ComboBox ItemsSource="{Binding Events}" SelectedItem="{Binding SelectedItem.Event}" DisplayMemberPath="Title" Width="120" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
         </Grid>
-        <Button x:Name="Create" Content="Add an Event" Command="{Binding AddEventCommand}"  Grid.Row="4" Grid.Column="0" Margin="10" Width="100" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
-        <Button x:Name="Submit" Content="Submit" Command="{Binding SubmitEventCommand}"  Grid.Row="4" Grid.Column="1" Margin="10" Width="60" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
-        <Button x:Name="Delete" Content="Delete" Command="{Binding DeleteEventCommand}"  Grid.Row="4" Grid.Column="1" Margin="10" Width="60" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+        <Button x:Name="Create" Content="Add an Invitation" Command="{Binding AddCommand}"  Grid.Row="4" Grid.Column="0" Margin="10" Width="100" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
+        <Button x:Name="Submit" Content="Submit" Command="{Binding SubmitCommand}"  Grid.Row="4" Grid.Column="1" Margin="10" Width="60" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+        <Button x:Name="Delete" Content="Delete" Command="{Binding DeleteCommand}"  Grid.Row="4" Grid.Column="1" Margin="10" Width="60" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
     </Grid>
 </UserControl>
