@@ -25,5 +25,21 @@
             }
         }
 
+        private Event _event;
+        public Event Event { get => _event; set { _event = value; EventId = value.Id; } }
+
+        private User _user;
+        public User User { get => _user; set { _user = value; UserId = value.Id; } }
+
+        private string _title;
+        public string Title { get { return _title;  } set { _title = value; OnPropertyChanged("Title"); } }
+        public string CreateTitle() {
+           return $"{User.FullName} to {Event.Title}";
+        }
+
+        public override bool isValid()
+        {
+            return true;
+        }
     }
 }

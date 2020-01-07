@@ -2,7 +2,7 @@
 
 namespace ProgrammingTechnologies.BO.Models
 {
-    public class Model : INotifyPropertyChanged
+    public abstract class Model : INotifyPropertyChanged
     {
         private int _id;
 
@@ -29,5 +29,6 @@ namespace ProgrammingTechnologies.BO.Models
         }
 
         #endregion
+        public abstract bool isValid();
     }
 }

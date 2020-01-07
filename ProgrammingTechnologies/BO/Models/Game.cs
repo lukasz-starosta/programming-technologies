@@ -87,19 +87,16 @@ namespace ProgrammingTechnologies.BO.Models
             "Description"
         };
 
-        public bool IsValid
+        public override bool isValid()
         {
-            get
+            foreach (string property in ValidatedProperties)
             {
-                foreach (string property in ValidatedProperties)
+                if (GetValidationError(property) != null)
                 {
-                    if (GetValidationError(property) != null)
-                    {
-                        return false;
-                    }
+                    return false;
                 }
-                return true;
             }
+            return true;
         }
 
         public string GetValidationError(String propertyName)
