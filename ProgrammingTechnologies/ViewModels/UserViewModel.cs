@@ -19,7 +19,7 @@ namespace ProgrammingTechnologies.ViewModels
         {
             Name = "User";
             UserManager = new UserManager(ServiceProvider.GetDatabaseDependentServices);
-            CurrentUser = UserManager.GetManagedObjectWhere("id = 135");
+            CurrentUser = SessionManager.GetCurrentUser();
 
             StartEditing = new RelayCommand(Edit, () => !IsEditing);
             SubmitEditing = new RelayCommand(Submit, () => IsEditing && CurrentUser.isValid());

@@ -1,4 +1,5 @@
-﻿ using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ProgrammingTechnologies.BO.Models;
 using ProgrammingTechnologies.Helpers;
 
@@ -59,6 +60,7 @@ namespace ProgrammingTechnologies.BLL.Managers
             return eventService.GetAllServicedObjectsWhere($"user_id = {user.Id}");
         }
 
+
         public List<Event> GetInvitedEventsOf(User user)
         {
             List<Invitation> invitations = invitationService.GetAllServicedObjectsWhere($"user_id = {user.Id}");
@@ -85,6 +87,19 @@ namespace ProgrammingTechnologies.BLL.Managers
                 EventId = _event.Id
             };
             invitationService.CreateServicedObject(ref invitation);
+        }
+
+        public bool VerifyUserLogin(string email, string password)
+        {
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password)) return false;
+            User user = GetManagedObjectWhere($"email = '{email}'");
+            return user != null && user.IsPasswordCorrect(password);
+        }
+        public bool UserExists(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email)) return false;
+            User user = GetManagedObjectWhere($"email = '{email}'");
+            return user != null;
         }
     }
 }

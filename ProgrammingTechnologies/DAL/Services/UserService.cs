@@ -31,6 +31,7 @@ namespace ProgrammingTechnologies.DAL.Services
         {
             string query = string.Format("select * from Users where {0}", condition);
             DataTable result = database.ExecuteQuery(query);
+            if (result == null || result.Rows.Count == 0) return null;
             return new User()
             {
                 Id = Convert.ToInt32(result.Rows[0]["id"]),
