@@ -60,6 +60,7 @@ namespace ProgrammingTechnologies.BO.Models
             }
         }
 
+
         private User _gameOwner;
         public User GameOwner { get { return _gameOwner; } set { _gameOwner = value; UserId = _gameOwner.Id; } }
 

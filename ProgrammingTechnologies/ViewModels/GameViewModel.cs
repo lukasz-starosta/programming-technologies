@@ -3,7 +3,9 @@ using ProgrammingTechnologies.BO.Models;
 using ProgrammingTechnologies.Enums;
 using ProgrammingTechnologies.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -12,6 +14,7 @@ namespace ProgrammingTechnologies.ViewModels
 {
     internal class GameViewModel : ViewModel<Game>
     {
+        
         private UserManager UserManager { get; set; }
         private GameManager GameManager { get; set; }
         public GameViewModel()
@@ -20,10 +23,18 @@ namespace ProgrammingTechnologies.ViewModels
             GameManager = new GameManager(ServiceProvider.GetDatabaseDependentServices);
             UserManager = new UserManager(ServiceProvider.GetDatabaseDependentServices);
 
-            Items = new ObservableCollection<Game>(GameManager.GetAllManagedObjects());
-            SelectedItem = Items[0];
+            CurrentUser = SessionManager.GetCurrentUser();
+
 
             Users = new ObservableCollection<User>(UserManager.GetAllManagedObjects());
+            Categories = new ObservableCollection<string>(Enum.GetNames(typeof(EnumCategory)));
+
+            Items = new ObservableCollection<Game>(GameManager.GetAllManagedObjectsWhere($"user_id = {CurrentUser.Id}"));
+            if (Items.Count > 0)
+            {
+
+            SelectedItem = Items[0];
+
 
             // Assign game owners to games
             foreach (Game Game in Items)
@@ -31,11 +42,11 @@ namespace ProgrammingTechnologies.ViewModels
                 Game.GameOwner = GetGameOwner(Game);
             }
 
-            Categories = new ObservableCollection<string>(Enum.GetNames(typeof(EnumCategory)));
+            }
 
-            SubmitCommand = new RelayCommand(() => Task.Run(() => UpdateItem()), SelectedItem.isValid);
+            SubmitCommand = new RelayCommand(() => Task.Run(() => UpdateItem()), () => SelectedItem != null && SelectedItem.isValid());
             AddCommand = new RelayCommand(() => Task.Run(() => AddItem()));
-            DeleteCommand = new RelayCommand(() => Task.Run(() => DeleteItem()), CanDeleteItem);
+            DeleteCommand = new RelayCommand(() => Task.Run(() => DeleteItem()), () => SelectedItem != null && CanDeleteItem());
         }
 
         public ObservableCollection<User> Users
@@ -57,8 +68,7 @@ namespace ProgrammingTechnologies.ViewModels
         {
             Game newGame = new Game()
             {
-                // TODO: CHANGE THIS TO CURRENT USER
-                UserId = 135,
+                UserId = CurrentUser.Id,
                 Title = "New game",
                 Description = "",
                 Category = (int)EnumCategory.Adventure,

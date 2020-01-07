@@ -19,20 +19,23 @@ namespace ProgrammingTechnologies.ViewModels
             GameManager = new GameManager(ServiceProvider.GetDatabaseDependentServices);
             EventManager = new EventManager(ServiceProvider.GetDatabaseDependentServices);
 
-            CurrentUser = new User() { Id = 135, Name = "Lukasz", LastName = "Starosta" };
+            CurrentUser = SessionManager.GetCurrentUser();
             Games = new ObservableCollection<Game>(GameManager.GetAllManagedObjectsWhere($"user_id = {CurrentUser.Id}"));
 
-            Items = new ObservableCollection<Event>(EventManager.GetAllManagedObjects());
-            SelectedItem = Items[0];
-
-            foreach (Event e in Items)
+            Items = new ObservableCollection<Event>(EventManager.GetAllManagedObjectsWhere($"user_id = {CurrentUser.Id}"));
+            if (Items.Count > 0)
             {
-                e.Game = GetEventGame(e);
+                SelectedItem = Items[0];
+
+                foreach (Event e in Items)
+                {
+                    e.Game = GetEventGame(e);
+                }
             }
 
-            SubmitCommand = new RelayCommand(() => Task.Run(() => UpdateItem()), SelectedItem.isValid);
+            SubmitCommand = new RelayCommand(() => Task.Run(() => UpdateItem()), () => SelectedItem != null && SelectedItem.isValid());
             AddCommand = new RelayCommand(() => Task.Run(() => AddItem()));
-            DeleteCommand = new RelayCommand(() => Task.Run(() => DeleteItem()), CanDeleteItem);
+            DeleteCommand = new RelayCommand(() => Task.Run(() => DeleteItem()), () => SelectedItem != null && CanDeleteItem());
         }
 
         public ObservableCollection<Game> Games
