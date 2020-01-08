@@ -1,7 +1,6 @@
 ﻿using ProgrammingTechnologies.BLL.Managers;
 using ProgrammingTechnologies.BO.Models;
 using ProgrammingTechnologies.Helpers;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,36 +9,33 @@ namespace ProgrammingTechnologies.ViewModels
 {
     internal class InvitationViewModel : ViewModel<Invitation>
     {
-        // TODO: get this from session manager
-        public User CurrentUser { get; set; }
         private InvitationManager InvitationManager { get; set; }
-        private UserManager UserManager { get; set; }
-        private EventManager EventManager { get; set; }
-        public InvitationViewModel()
+        public InvitationViewModel(ref User currentUser, ref ObservableCollection<Invitation> invitations, ref ObservableCollection<Event> events, ref ObservableCollection<User> users)
         {
             Name = "Invitations";
+            Items = invitations;
+            Events = events;
+            Users = users;
+
+            CurrentUser = currentUser;
+
             InvitationManager = new InvitationManager(ServiceProvider.GetDatabaseDependentServices);
-            UserManager = new UserManager(ServiceProvider.GetDatabaseDependentServices);
-            EventManager = new EventManager(ServiceProvider.GetDatabaseDependentServices);
-
-            CurrentUser = new User() { Id = 135, Name = "Lukasz", LastName = "Starosta" };
-
-            Users = new ObservableCollection<User>(UserManager.GetAllManagedObjects());
-            Events = new ObservableCollection<Event>(EventManager.GetAllManagedObjects());
-
-            Items = new ObservableCollection<Invitation>(InvitationManager.GetAllManagedObjects());
-            SelectedItem = Items[0];
-
-            foreach (Invitation i in Items)
+  
+            if (Items.Count > 0)
             {
-                i.Event = GetInvitationEvent(i);
-                i.User = GetInvitationUser(i);
-                i.Title = i.CreateTitle();
+                SelectedItem = Items[0];
+
+                foreach (Invitation i in Items)
+                {
+                    i.Event = GetInvitationEvent(i);
+                    i.User = GetInvitationUser(i);
+                    i.Title = i.CreateTitle();
+                }
             }
 
-            SubmitCommand = new RelayCommand(() => Task.Run(() => UpdateItem()), SelectedItem.isValid);
+            SubmitCommand = new RelayCommand(() => Task.Run(() => UpdateItem()), () => SelectedItem != null && SelectedItem.isValid());
             AddCommand = new RelayCommand(() => Task.Run(() => AddItem()));
-            DeleteCommand = new RelayCommand(() => Task.Run(() => DeleteItem()), CanDeleteItem);
+            DeleteCommand = new RelayCommand(() => Task.Run(() => DeleteItem()), () => SelectedItem != null && CanDeleteItem());
         }
 
         public ObservableCollection<Event> Events

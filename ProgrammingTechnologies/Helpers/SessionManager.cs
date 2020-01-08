@@ -4,16 +4,18 @@ namespace ProgrammingTechnologies.Helpers
 {
     public static class SessionManager
     {
-        public static int _currentUserId;
+        public static User _currentUser;
 
         public static void LogInUser(User user)
         {
-            _currentUserId = user.Id;
+            _currentUser = user;
         }
+
+        public static User GetCurrentUser() { return _currentUser; }
 
         public static void EndSession()
         {
-            _currentUserId = 0;
+            _currentUser = null;
         }
     }
 }

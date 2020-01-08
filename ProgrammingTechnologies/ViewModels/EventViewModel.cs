@@ -9,30 +9,30 @@ namespace ProgrammingTechnologies.ViewModels
 {
     internal class EventViewModel : ViewModel<Event>
     {
-        // TODO: get this from session manager
-        public User CurrentUser { get; set; }
-        private GameManager GameManager { get; set; }
         private EventManager EventManager { get; set; }
-        public EventViewModel()
+        public EventViewModel(ref User currentUser, ref ObservableCollection<Game> games, ref ObservableCollection<Event> events)
         {
             Name = "Events";
-            GameManager = new GameManager(ServiceProvider.GetDatabaseDependentServices);
+            Items = events;
+            Games = games;
+
+            CurrentUser = currentUser;
+
             EventManager = new EventManager(ServiceProvider.GetDatabaseDependentServices);
 
-            CurrentUser = new User() { Id = 135, Name = "Lukasz", LastName = "Starosta" };
-            Games = new ObservableCollection<Game>(GameManager.GetAllManagedObjectsWhere($"user_id = {CurrentUser.Id}"));
-
-            Items = new ObservableCollection<Event>(EventManager.GetAllManagedObjects());
-            SelectedItem = Items[0];
-
-            foreach (Event e in Items)
+            if (Items.Count > 0)
             {
-                e.Game = GetEventGame(e);
+                SelectedItem = Items[0];
+
+                foreach (Event e in Items)
+                {
+                    e.Game = GetEventGame(e);
+                }
             }
 
-            SubmitCommand = new RelayCommand(() => Task.Run(() => UpdateItem()), SelectedItem.isValid);
+            SubmitCommand = new RelayCommand(() => Task.Run(() => UpdateItem()), () => SelectedItem != null && SelectedItem.isValid());
             AddCommand = new RelayCommand(() => Task.Run(() => AddItem()));
-            DeleteCommand = new RelayCommand(() => Task.Run(() => DeleteItem()), CanDeleteItem);
+            DeleteCommand = new RelayCommand(() => Task.Run(() => DeleteItem()), () => SelectedItem != null && CanDeleteItem());
         }
 
         public ObservableCollection<Game> Games
@@ -41,7 +41,7 @@ namespace ProgrammingTechnologies.ViewModels
 
         }
         public Game SelectedGame { get; set; }
-
+        
         public ObservableCollection<string> Categories
         {
             get; set;
@@ -49,7 +49,7 @@ namespace ProgrammingTechnologies.ViewModels
 
         private Game GetEventGame(Event e)
         {
-            return Games.Where(Game => Game.Id == SelectedItem.GameId).First();
+            return Games.Where(Game => Game.Id == e.GameId).FirstOrDefault();
         }
 
         protected override void AddItem()

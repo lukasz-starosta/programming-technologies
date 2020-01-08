@@ -1,6 +1,7 @@
 ﻿using ProgrammingTechnologies.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,7 @@ namespace ProgrammingTechnologies
         {
             InitializeComponent();
             DataContext = new MainViewModel();
+            Closing += new CancelEventHandler((object o, CancelEventArgs e) => Application.Current.Shutdown());
         }
     }
 }

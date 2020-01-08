@@ -1,7 +1,9 @@
 ﻿using ProgrammingTechnologies.BLL.Managers;
 using ProgrammingTechnologies.BO.Models;
 using ProgrammingTechnologies.Helpers;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace ProgrammingTechnologies.ViewModels
@@ -15,11 +17,14 @@ namespace ProgrammingTechnologies.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         public User CurrentUser { get; set; }
-        public UserViewModel()
+        public ObservableCollection<User> Users { get; set; }
+        public UserViewModel(ref User currentUser, ref ObservableCollection<User> users)
         {
             Name = "User";
+            CurrentUser = currentUser;
+            Users = users;
+
             UserManager = new UserManager(ServiceProvider.GetDatabaseDependentServices);
-            CurrentUser = UserManager.GetManagedObjectWhere("id = 135");
 
             StartEditing = new RelayCommand(Edit, () => !IsEditing);
             SubmitEditing = new RelayCommand(Submit, () => IsEditing && CurrentUser.isValid());
@@ -39,8 +44,23 @@ namespace ProgrammingTechnologies.ViewModels
         private void Submit()
         {
             User user = CurrentUser;
-            UserManager.UpdateManagedObject(ref user);
-            CurrentUser = user;
+
+            // GUI can only be updated by using Dispatcher
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                User userToUpdate = Users.First(User => User.Id == CurrentUser.Id);
+
+                UserManager.UpdateManagedObject(ref user);
+                CurrentUser = user;
+                userToUpdate.Name = CurrentUser.Name;
+                userToUpdate.LastName = CurrentUser.LastName;
+                userToUpdate.Email = CurrentUser.Email;
+                userToUpdate.Password = CurrentUser.Password;
+
+                OnPropertyChanged("CurrentUser");
+            });
+
+
             IsEditing = false;
         }
 

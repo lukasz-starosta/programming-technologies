@@ -20,7 +20,13 @@ namespace ProgrammingTechnologies.BO.Models
             get { return _password; }
             set
             {
+                if (_password == null)
+                {
+                    _password = value;
+                } else 
+                {
                 _password = SecurePasswordHasher.Hash(value);
+                }
                 OnPropertyChanged("Password");
             }
         }
