@@ -9,23 +9,18 @@ namespace ProgrammingTechnologies.ViewModels
 {
     internal class InvitationViewModel : ViewModel<Invitation>
     {
-        public User CurrentUser { get; set; }
         private InvitationManager InvitationManager { get; set; }
-        private UserManager UserManager { get; set; }
-        private EventManager EventManager { get; set; }
-        public InvitationViewModel()
+        public InvitationViewModel(ref User currentUser, ref ObservableCollection<Invitation> invitations, ref ObservableCollection<Event> events, ref ObservableCollection<User> users)
         {
             Name = "Invitations";
+            Items = invitations;
+            Events = events;
+            Users = users;
+
+            CurrentUser = currentUser;
+
             InvitationManager = new InvitationManager(ServiceProvider.GetDatabaseDependentServices);
-            UserManager = new UserManager(ServiceProvider.GetDatabaseDependentServices);
-            EventManager = new EventManager(ServiceProvider.GetDatabaseDependentServices);
-
-            CurrentUser = SessionManager.GetCurrentUser();
-
-            Users = new ObservableCollection<User>(UserManager.GetAllManagedObjects());
-            Events = new ObservableCollection<Event>(EventManager.GetAllManagedObjectsWhere($"user_id = {CurrentUser.Id}"));
-
-            Items = new ObservableCollection<Invitation>(InvitationManager.GetAllManagedObjectsWhere($"user_id = {CurrentUser.Id}"));
+  
             if (Items.Count > 0)
             {
                 SelectedItem = Items[0];

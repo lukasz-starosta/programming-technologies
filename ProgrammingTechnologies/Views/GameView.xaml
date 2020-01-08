@@ -38,15 +38,15 @@
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
             <Label Content="Title:" Grid.Row="0" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
-            <TextBox Name="Title" IsEnabled="{Binding SelectedItem.IsCurrentUserGameOwner}" Text="{Binding SelectedItem.Title, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="180" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top" />
+            <TextBox Name="Title" Text="{Binding SelectedItem.Title, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="180" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top" />
             <Label Content="{Binding ElementName=Title, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red"  Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Height="50" Margin="5 25 0 0"/>
             <Label Content="User:" Grid.Row="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
-            <ComboBox ItemsSource="{Binding Users}"  IsEnabled="{Binding SelectedItem.IsCurrentUserGameOwner}" DisplayMemberPath="FullName" SelectedValuePath="FullName" SelectedItem="{Binding SelectedItem.GameOwner}" Width="120" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
+            <ComboBox ItemsSource="{Binding Users}" DisplayMemberPath="FullName" SelectedValuePath="FullName" SelectedItem="{Binding SelectedItem.GameOwner}" Width="120" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
             <Label Content="Category: " Grid.Row="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-            <ComboBox Name="Categories"  IsEnabled="{Binding SelectedItem.IsCurrentUserGameOwner}" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedItem.ReadableCategory}" Width="120" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
+            <ComboBox Name="Categories"  ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedItem.ReadableCategory}" Width="120" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
             <Label Content="Description: " Grid.Row="3" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top"/>
             <Label Content="{Binding ElementName=Description, Path=(Validation.Errors).CurrentItem.ErrorContent}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Foreground="Red" HorizontalAlignment="Left" Margin="10, 25, 0, 0" Width="300" VerticalAlignment="Top"/>
-            <TextBox  IsEnabled="{Binding SelectedItem.IsCurrentUserGameOwner}" TextWrapping="Wrap" AcceptsReturn="True" Name="Description" Text="{Binding SelectedItem.Description, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Width="300" Height="100" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top"/>
+            <TextBox TextWrapping="Wrap" AcceptsReturn="True" Name="Description" Text="{Binding SelectedItem.Description, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Width="300" Height="100" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top"/>
 
         </Grid>
         <Button x:Name="Create" Content="Add a Game" Command="{Binding AddCommand}"  Grid.Row="4" Grid.Column="0" Margin="10" Width="100" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" />

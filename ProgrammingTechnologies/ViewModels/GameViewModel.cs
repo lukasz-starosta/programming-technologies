@@ -3,45 +3,37 @@ using ProgrammingTechnologies.BO.Models;
 using ProgrammingTechnologies.Enums;
 using ProgrammingTechnologies.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace ProgrammingTechnologies.ViewModels
 {
     internal class GameViewModel : ViewModel<Game>
     {
-        
-        private UserManager UserManager { get; set; }
         private GameManager GameManager { get; set; }
-        public GameViewModel()
+        public GameViewModel(ref User currentUser, ref ObservableCollection<Game> games, ref ObservableCollection<User> users)
         {
+            Items = games;
+            Users = users;
+
+            CurrentUser = currentUser;
+
             Name = "Games";
+
             GameManager = new GameManager(ServiceProvider.GetDatabaseDependentServices);
-            UserManager = new UserManager(ServiceProvider.GetDatabaseDependentServices);
 
-            CurrentUser = SessionManager.GetCurrentUser();
-
-
-            Users = new ObservableCollection<User>(UserManager.GetAllManagedObjects());
             Categories = new ObservableCollection<string>(Enum.GetNames(typeof(EnumCategory)));
 
-            Items = new ObservableCollection<Game>(GameManager.GetAllManagedObjectsWhere($"user_id = {CurrentUser.Id}"));
             if (Items.Count > 0)
             {
+                SelectedItem = Items[0];
 
-            SelectedItem = Items[0];
-
-
-            // Assign game owners to games
-            foreach (Game Game in Items)
-            {
-                Game.GameOwner = GetGameOwner(Game);
-            }
-
+                // Assign game owners to games
+                foreach (Game Game in Items)
+                {
+                    Game.GameOwner = GetGameOwner(Game);
+                }
             }
 
             SubmitCommand = new RelayCommand(() => Task.Run(() => UpdateItem()), () => SelectedItem != null && SelectedItem.isValid());

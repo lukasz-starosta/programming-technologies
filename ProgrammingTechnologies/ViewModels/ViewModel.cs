@@ -12,7 +12,8 @@ namespace ProgrammingTechnologies.ViewModels
         public User CurrentUser { get; set; }
         public string Name { get; set; }
         public ObservableCollection<T> Items { get; set; }
-        public T SelectedItem { get; set; }
+        private T _selectedItem;
+        public T SelectedItem { get => _selectedItem; set { _selectedItem = value; OnPropertyChanged("SelectedItem"); } }
 
 
         public ICommand SubmitCommand { get; protected set; }
